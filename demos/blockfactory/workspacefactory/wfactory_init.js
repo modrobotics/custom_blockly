@@ -1,7 +1,18 @@
 /**
  * @license
  * Copyright 2016 Google LLC
- * SPDX-License-Identifier: Apache-2.0
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 /**
@@ -9,6 +20,8 @@
  * Adds click handlers to buttons and dropdowns, adds event listeners for
  * keydown events and Blockly events, and configures the initial setup of
  * the page.
+ *
+ * @author Emma Dauterman (evd2014)
  */
 
 /**
@@ -50,7 +63,7 @@ WorkspaceFactoryInit.initColourPicker_ = function(controller) {
   // Convert hue numbers to RRGGBB strings.
   for (var i = 0; i < colours.length; i++) {
     if (colours[i] !== '') {
-      colours[i] = Blockly.utils.colour.hueToHex(colours[i]).substring(1);
+      colours[i] = Blockly.hueToHex(colours[i]).substring(1);
     }
   }
   // Convert to 2D array.
@@ -59,7 +72,7 @@ WorkspaceFactoryInit.initColourPicker_ = function(controller) {
   var row = [];
   for (var i = 0; i < colours.length; i++) {
     row.push(colours[i]);
-    if (row.length === maxCols) {
+    if (row.length == maxCols) {
       grid.push(row);
       row = [];
     }
@@ -233,12 +246,12 @@ WorkspaceFactoryInit.assignWorkspaceFactoryClickHandlers_ =
       function() {
         var selected = controller.model.getSelected();
         // Return if a category is not selected.
-        if (selected.type !== ListElement.TYPE_CATEGORY) {
+        if (selected.type != ListElement.TYPE_CATEGORY) {
           return;
         }
         document.getElementById('categoryName').value = selected.name;
-        document.getElementById('categoryColour').value = selected.colour ?
-            selected.colour.substring(1).toLowerCase() : '';
+        document.getElementById('categoryColour').value = selected.color ?
+            selected.color.substring(1).toLowerCase() : '';
         console.log(document.getElementById('categoryColour').value);
         // Link the colour picker to the field.
         cp_init('categoryColour');
@@ -272,7 +285,7 @@ WorkspaceFactoryInit.assignWorkspaceFactoryClickHandlers_ =
 
         // Disable shadow editing button if turning invalid shadow block back
         // to normal block.
-        if (!Blockly.common.getSelected().getSurroundParent()) {
+        if (!Blockly.selected.getSurroundParent()) {
           document.getElementById('button_addShadow').disabled = true;
         }
       });
@@ -302,14 +315,14 @@ WorkspaceFactoryInit.addWorkspaceFactoryEventListeners_ = function(controller) {
     // Don't let arrow keys have any effect if not in Workspace Factory
     // editing the toolbox.
     if (!(controller.keyEventsEnabled && controller.selectedMode
-        === WorkspaceFactoryController.MODE_TOOLBOX)) {
+        == WorkspaceFactoryController.MODE_TOOLBOX)) {
       return;
     }
 
-    if (e.keyCode === 38) {
+    if (e.keyCode == 38) {
       // Arrow up.
       controller.moveElement(-1);
-    } else if (e.keyCode === 40) {
+    } else if (e.keyCode == 40) {
       // Arrow down.
       controller.moveElement(1);
     }
@@ -332,9 +345,9 @@ WorkspaceFactoryInit.addWorkspaceFactoryEventListeners_ = function(controller) {
     // Not listening for Blockly create events because causes the user to drop
     // blocks when dragging them into workspace. Could cause problems if ever
     // load blocks into workspace directly without calling updatePreview.
-    if (e.type === Blockly.Events.BLOCK_MOVE ||
-          e.type === Blockly.Events.BLOCK_DELETE ||
-          e.type === Blockly.Events.BLOCK_CHANGE) {
+    if (e.type == Blockly.Events.BLOCK_MOVE ||
+          e.type == Blockly.Events.BLOCK_DELETE ||
+          e.type == Blockly.Events.BLOCK_CHANGE) {
       controller.saveStateFromWorkspace();
       controller.updatePreview();
     }
@@ -343,9 +356,9 @@ WorkspaceFactoryInit.addWorkspaceFactoryEventListeners_ = function(controller) {
     // Only enable "Edit Block" when a block is selected and it has a
     // surrounding parent, meaning it is nested in another block (blocks that
     // are not nested in parents cannot be shadow blocks).
-    if (e.type === Blockly.Events.BLOCK_MOVE ||
-        e.type === Blockly.Events.SELECTED) {
-      var selected = Blockly.common.getSelected();
+    if (e.type == Blockly.Events.BLOCK_MOVE || (e.type == Blockly.Events.UI &&
+        e.element == 'selected')) {
+      var selected = Blockly.selected;
 
       // Show shadow button if a block is selected. Show "Add Shadow" if
       // a block is not a shadow block, show "Remove Shadow" if it is a
@@ -359,7 +372,7 @@ WorkspaceFactoryInit.addWorkspaceFactoryEventListeners_ = function(controller) {
         WorkspaceFactoryInit.displayRemoveShadow_(false);
       }
 
-      if (selected !== null && selected.getSurroundParent() !== null &&
+      if (selected != null && selected.getSurroundParent() != null &&
           !controller.isUserGenShadowBlock(selected.getSurroundParent().id)) {
         // Selected block is a valid shadow block or could be a valid shadow
         // block.
@@ -376,7 +389,7 @@ WorkspaceFactoryInit.addWorkspaceFactoryEventListeners_ = function(controller) {
       } else {
         // Selected block cannot be a valid shadow block.
 
-        if (selected !== null && isInvalidBlockPlacement(selected)) {
+        if (selected != null && isInvalidBlockPlacement(selected)) {
           // Selected block breaks shadow block rules.
           // Invalid shadow block if (1) a shadow block no longer has a valid
           // parent, or (2) a normal block is inside of a shadow block.
@@ -401,7 +414,7 @@ WorkspaceFactoryInit.addWorkspaceFactoryEventListeners_ = function(controller) {
           // be a shadow block.
 
           // Remove possible 'invalid shadow block placement' warning.
-          if (selected !== null && controller.isDefinedBlock(selected) &&
+          if (selected != null && controller.isDefinedBlock(selected) &&
               (!FactoryUtils.hasVariableField(selected) ||
               !controller.isUserGenShadowBlock(selected.id))) {
             selected.setWarningText(null);
@@ -417,7 +430,7 @@ WorkspaceFactoryInit.addWorkspaceFactoryEventListeners_ = function(controller) {
 
     // Convert actual shadow blocks added from the toolbox to user-generated
     // shadow blocks.
-    if (e.type === Blockly.Events.BLOCK_CREATE) {
+    if (e.type == Blockly.Events.BLOCK_CREATE) {
       controller.convertShadowBlocks();
 
       // Let the user create a Variables or Functions category if they use

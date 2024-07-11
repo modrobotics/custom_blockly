@@ -1,6 +1,6 @@
 'use strict';
 
-var unittestResults, test_name, naked, proc_x, proc_y, func_x, func_y, func_a, n, ok, log, count, varToChange, rand, item, text, number_of_calls, list, proc_z, func_z, x, proc_w, func_c, if2, loglist, changing_list, list_copy;
+var unittestResults, test_name, naked, proc_x, proc_y, func_x, func_y, func_a, n, ok, log, count, varToChange, rand, item, text, number_of_calls, list, proc_z, func_z, x, proc_w, func_c, if2, i, loglist, changing_list, list_copy;
 
 function unittest_report() {
   // Create test report.
@@ -38,11 +38,11 @@ function assertEquals(actual, expected, message) {
   function equals(a, b) {
     if (a === b) {
       return true;
-    } else if ((typeof a === "number") && (typeof b === "number") &&
+    } else if ((typeof a == "number") && (typeof b == "number") &&
         (a.toPrecision(15) == b.toPrecision(15))) {
       return true;
     } else if (a instanceof Array && b instanceof Array) {
-      if (a.length !== b.length) {
+      if (a.length != b.length) {
         return false;
       }
       for (var i = 0; i < a.length; i++) {
@@ -177,7 +177,7 @@ function test_foreach() {
 function test_repeat() {
   count = 0;
   for (var count2 = 0; count2 < 10; count2++) {
-    count = (typeof count === 'number' ? count : 0) + 1;
+    count = (typeof count == 'number' ? count : 0) + 1;
   }
   assertEquals(count, 10, 'repeat 10');
 }
@@ -192,12 +192,12 @@ function test_while() {
   }
   count = 1;
   while (count != 10) {
-    count = (typeof count === 'number' ? count : 0) + 1;
+    count = (typeof count == 'number' ? count : 0) + 1;
   }
   assertEquals(count, 10, 'while 10');
   count = 1;
   while (!(count == 10)) {
-    count = (typeof count === 'number' ? count : 0) + 1;
+    count = (typeof count == 'number' ? count : 0) + 1;
   }
   assertEquals(count, 10, 'until 10');
 }
@@ -206,7 +206,7 @@ function test_while() {
 function test_repeat_ext() {
   count = 0;
   for (var count3 = 0; count3 < 10; count3++) {
-    count = (typeof count === 'number' ? count : 0) + 1;
+    count = (typeof count == 'number' ? count : 0) + 1;
   }
   assertEquals(count, 10, 'repeat 10');
 }
@@ -304,7 +304,7 @@ function test_continue() {
   log = '';
   count = 0;
   while (count != 8) {
-    count = (typeof count === 'number' ? count : 0) + 1;
+    count = (typeof count == 'number' ? count : 0) + 1;
     if (count == 5) {
       continue;
     }
@@ -314,7 +314,7 @@ function test_continue() {
   log = '';
   count = 0;
   while (!(count == 8)) {
-    count = (typeof count === 'number' ? count : 0) + 1;
+    count = (typeof count == 'number' ? count : 0) + 1;
     if (count == 5) {
       continue;
     }
@@ -348,7 +348,7 @@ function test_break() {
     if (count == 5) {
       break;
     }
-    count = (typeof count === 'number' ? count : 0) + 1;
+    count = (typeof count == 'number' ? count : 0) + 1;
   }
   assertEquals(count, 5, 'while break');
   count = 1;
@@ -356,7 +356,7 @@ function test_break() {
     if (count == 5) {
       break;
     }
-    count = (typeof count === 'number' ? count : 0) + 1;
+    count = (typeof count == 'number' ? count : 0) + 1;
   }
   assertEquals(count, 5, 'until break');
   log = '';
@@ -432,12 +432,12 @@ function mathIsPrime(n) {
   }
   // False if n is NaN, negative, is 1, or not whole.
   // And false if n is divisible by 2 or 3.
-  if (isNaN(n) || n <= 1 || n % 1 !== 0 || n % 2 === 0 || n % 3 === 0) {
+  if (isNaN(n) || n <= 1 || n % 1 != 0 || n % 2 == 0 || n % 3 == 0) {
     return false;
   }
   // Check all the numbers of form 6k +/- 1, up to sqrt(n).
   for (var x = 6; x <= Math.sqrt(n) + 1; x += 6) {
-    if (n % (x - 1) === 0 || n % (x + 1) === 0) {
+    if (n % (x - 1) == 0 || n % (x + 1) == 0) {
       return false;
     }
   }
@@ -446,19 +446,15 @@ function mathIsPrime(n) {
 
 // Tests the "number property" blocks.
 function test_number_properties() {
-  assertEquals(42 % 2 === 0, true, 'even');
-  assertEquals(42.1 % 2 === 1, false, 'odd');
+  assertEquals(42 % 2 == 0, true, 'even');
+  assertEquals(42.1 % 2 == 1, false, 'odd');
   assertEquals(mathIsPrime(5), true, 'prime 5');
-  assertEquals(mathIsPrime(5 + 2), true, 'prime 5 + 2 (extra parentheses)');
   assertEquals(mathIsPrime(25), false, 'prime 25');
   assertEquals(mathIsPrime(-31.1), false, 'prime negative');
-  assertEquals(Math.PI % 1 === 0, false, 'whole');
+  assertEquals(Math.PI % 1 == 0, false, 'whole');
   assertEquals(Infinity > 0, true, 'positive');
-  assertEquals(5 + 2 > 0, true, '5 + 2 is positive (extra parentheses)');
   assertEquals(-42 < 0, true, 'negative');
-  assertEquals(3 + 2 < 0, false, '3 + 2 is negative (extra parentheses)');
-  assertEquals(42 % 2 === 0, true, 'divisible');
-  assertEquals(!(42 % 0 === 0), true, 'divisible by 0');
+  assertEquals(42 % 2 == 0, true, 'divisible');
 }
 
 // Tests the "round" block.
@@ -471,19 +467,19 @@ function test_round() {
 // Tests the "change" block.
 function test_change() {
   varToChange = 100;
-  varToChange = (typeof varToChange === 'number' ? varToChange : 0) + 42;
+  varToChange = (typeof varToChange == 'number' ? varToChange : 0) + 42;
   assertEquals(varToChange, 142, 'change');
 }
 
 function mathMean(myList) {
-  return myList.reduce(function(x, y) {return x + y;}, 0) / myList.length;
+  return myList.reduce(function(x, y) {return x + y;}) / myList.length;
 }
 
 function mathMedian(myList) {
-  var localList = myList.filter(function (x) {return typeof x === 'number';});
+  var localList = myList.filter(function (x) {return typeof x == 'number';});
   if (!localList.length) return null;
   localList.sort(function(a, b) {return b - a;});
-  if (localList.length % 2 === 0) {
+  if (localList.length % 2 == 0) {
     return (localList[localList.length / 2 - 1] + localList[localList.length / 2]) / 2;
   } else {
     return localList[(localList.length - 1) / 2];
@@ -512,8 +508,8 @@ function mathModes(values) {
     maxCount = Math.max(thisCount, maxCount);
   }
   for (var j = 0; j < counts.length; j++) {
-    if (counts[j][1] === maxCount) {
-      modes.push(counts[j][0]);
+    if (counts[j][1] == maxCount) {
+        modes.push(counts[j][0]);
     }
   }
   return modes;
@@ -527,7 +523,7 @@ function mathStandardDeviation(numbers) {
   for (var j = 0; j < n; j++) {
     variance += Math.pow(numbers[j] - mean, 2);
   }
-  variance /= n;
+  variance = variance / n;
   return Math.sqrt(variance);
 }
 
@@ -538,7 +534,7 @@ function mathRandomList(list) {
 
 // Tests the "list operation" blocks.
 function test_operations_on_list() {
-  assertEquals([3, 4, 5].reduce(function(x, y) {return x + y;}, 0), 12, 'sum');
+  assertEquals([3, 4, 5].reduce(function(x, y) {return x + y;}), 12, 'sum');
   assertEquals(Math.min.apply(null, [3, 4, 5]), 3, 'min');
   assertEquals(Math.max.apply(null, [3, 4, 5]), 5, 'max');
   assertEquals(mathMean([3, 4, 5]), 4, 'average');
@@ -573,7 +569,7 @@ function mathRandomInt(a, b) {
 function test_random_integer() {
   rand = mathRandomInt(5, 10);
   assertEquals(rand >= 5 && rand <= 10, true, 'randRange');
-  assertEquals(rand % 1 === 0, true, 'randInteger');
+  assertEquals(rand % 1 == 0, true, 'randInteger');
 }
 
 // Tests the "random fraction" block.
@@ -649,7 +645,7 @@ function test_find_text_simple() {
 
 // Creates a string for use with the find test.
 function get_fruit() {
-  number_of_calls = (typeof number_of_calls === 'number' ? number_of_calls : 0) + 1;
+  number_of_calls = (typeof number_of_calls == 'number' ? number_of_calls : 0) + 1;
   return 'Banana';
 }
 
@@ -695,7 +691,7 @@ function test_get_text_simple() {
 
 // Creates a string for use with the get test.
 function get_Blockly() {
-  number_of_calls = (typeof number_of_calls === 'number' ? number_of_calls : 0) + 1;
+  number_of_calls = (typeof number_of_calls == 'number' ? number_of_calls : 0) + 1;
   return 'Blockly';
 }
 
@@ -737,7 +733,7 @@ function test_get_text_complex() {
 
 // Creates a string for use with the substring test.
 function get_numbers() {
-  number_of_calls = (typeof number_of_calls === 'number' ? number_of_calls : 0) + 1;
+  number_of_calls = (typeof number_of_calls == 'number' ? number_of_calls : 0) + 1;
   return '123456789';
 }
 
@@ -811,7 +807,7 @@ function test_substring_complex() {
   assertEquals(subsequenceFromEndFromEnd(get_numbers(), 2, 1), '78', 'substring #-end complex');
   check_number_of_calls('substring #-end complex');
   number_of_calls = 0;
-  assertEquals(subsequenceFromEndFromEnd(true ? get_numbers() : null, ((0 + 3) - 1), ((0 + 2) - 1)), '78', 'substring #-end order order');
+  assertEquals(subsequenceFromEndFromEnd((true ? get_numbers() : null), ((0 + 3) - 1), ((0 + 2) - 1)), '78', 'substring #-end order order');
   check_number_of_calls('substring #-end order order');
   number_of_calls = 0;
   assertEquals(get_numbers(), text, 'substring first-last');
@@ -904,8 +900,8 @@ function test_text_reverse() {
 }
 
 function textReplace(haystack, needle, replacement) {
-  needle = needle.replace(/([-()\[\]{}+?*.$\^|,:#<!\\])/g, '\\$1')
-                 .replace(/\x08/g, '\\x08');
+  needle = needle.replace(/([-()\[\]{}+?*.$\^|,:#<!\\])/g,"\\$1")
+                 .replace(/\x08/g,"\\x08");
   return haystack.replace(new RegExp(needle, 'g'), replacement);
 }
 
@@ -974,7 +970,7 @@ function test_find_lists_simple() {
 
 // Creates a list for use with the find test.
 function get_names() {
-  number_of_calls = (typeof number_of_calls === 'number' ? number_of_calls : 0) + 1;
+  number_of_calls = (typeof number_of_calls == 'number' ? number_of_calls : 0) + 1;
   return ['Alice', 'Eve', 'Bob', 'Eve'];
 }
 
@@ -1022,21 +1018,9 @@ function test_get_lists_simple() {
   assertEquals(list.slice((-(0 + 3)))[0], 'Kirk', 'get #-end order simple');
 }
 
-// Tests the "get" block with create list call.
-function test_get_lists_create_list() {
-  assertEquals(['Kirk', 'Spock', 'McCoy'][0], 'Kirk', 'get first create list');
-  assertEquals(['Kirk', 'Spock', 'McCoy'].slice(-1)[0], 'McCoy', 'get last simple');
-  assertEquals(['Kirk', 'Spock', 'McCoy'].indexOf(listsGetRandomItem(['Kirk', 'Spock', 'McCoy'], false)) + 1 > 0, true, 'get random simple');
-  assertEquals(['Kirk', 'Spock', 'McCoy'][1], 'Spock', 'get # simple');
-  assertEquals(['Kirk', 'Spock', 'McCoy'][((true ? 2 : null) - 1)], 'Spock', 'get # order simple');
-  assertEquals(['Kirk', 'Spock', 'McCoy'].slice(-3)[0], 'Kirk', 'get #-end simple');
-  // The order for index for #-end is addition because this will catch errors in generators where most perform the operation ... - index.
-  assertEquals(['Kirk', 'Spock', 'McCoy'].slice((-(0 + 3)))[0], 'Kirk', 'get #-end order simple');
-}
-
 // Creates a list for use with the get test.
 function get_star_wars() {
-  number_of_calls = (typeof number_of_calls === 'number' ? number_of_calls : 0) + 1;
+  number_of_calls = (typeof number_of_calls == 'number' ? number_of_calls : 0) + 1;
   return ['Kirk', 'Spock', 'McCoy'];
 }
 
@@ -1253,7 +1237,7 @@ function test_sublist_simple() {
 
 // Creates a list for use with the sublist test.
 function get_space_shuttles() {
-  number_of_calls = (typeof number_of_calls === 'number' ? number_of_calls : 0) + 1;
+  number_of_calls = (typeof number_of_calls == 'number' ? number_of_calls : 0) + 1;
   return ['Columbia', 'Challenger', 'Discovery', 'Atlantis', 'Endeavour'];
 }
 
@@ -1321,15 +1305,15 @@ function test_split() {
 
 function listsGetSortCompare(type, direction) {
   var compareFuncs = {
-    'NUMERIC': function(a, b) {
+    "NUMERIC": function(a, b) {
         return Number(a) - Number(b); },
-    'TEXT': function(a, b) {
-        return String(a) > String(b) ? 1 : -1; },
-    'IGNORE_CASE': function(a, b) {
-        return String(a).toLowerCase() > String(b).toLowerCase() ? 1 : -1; },
+    "TEXT": function(a, b) {
+        return a.toString() > b.toString() ? 1 : -1; },
+    "IGNORE_CASE": function(a, b) {
+        return a.toString().toLowerCase() > b.toString().toLowerCase() ? 1 : -1; },
   };
   var compare = compareFuncs[type];
-  return function(a, b) { return compare(a, b) * direction; };
+  return function(a, b) { return compare(a, b) * direction; }
 }
 
 // Tests the "alphabetic sort" block.
@@ -1360,6 +1344,65 @@ function test_lists_reverse() {
   assertEquals(list, [8, 18, -1, 64], 'reverse a copy original');
   list = [];
   assertEquals(list.slice().reverse(), [], 'empty list');
+}
+
+// Describe this function...
+function test_colour_picker() {
+  assertEquals('#ff6600', '#ff6600', 'static colour');
+}
+
+function colourRgb(r, g, b) {
+  r = Math.max(Math.min(Number(r), 100), 0) * 2.55;
+  g = Math.max(Math.min(Number(g), 100), 0) * 2.55;
+  b = Math.max(Math.min(Number(b), 100), 0) * 2.55;
+  r = ('0' + (Math.round(r) || 0).toString(16)).slice(-2);
+  g = ('0' + (Math.round(g) || 0).toString(16)).slice(-2);
+  b = ('0' + (Math.round(b) || 0).toString(16)).slice(-2);
+  return '#' + r + g + b;
+}
+
+// Describe this function...
+function test_rgb() {
+  assertEquals(colourRgb(100, 40, 0), '#ff6600', 'from rgb');
+}
+
+function colourRandom() {
+  var num = Math.floor(Math.random() * Math.pow(2, 24));
+  return '#' + ('00000' + num.toString(16)).substr(-6);
+}
+
+// Describe this function...
+function test_colour_random() {
+  for (var count4 = 0; count4 < 100; count4++) {
+    item = colourRandom();
+    assertEquals(item.length, 7, 'length of random colour string: ' + String(item));
+    assertEquals(item.charAt(0), '#', 'format of random colour string: ' + String(item));
+    for (i = 1; i <= 6; i++) {
+      assertEquals(0 != 'abcdefABDEF0123456789'.indexOf(item.charAt(((i + 1) - 1))) + 1, true, ['contents of random colour string: ',item,' at index: ',i + 1].join(''));
+    }
+  }
+}
+
+function colourBlend(c1, c2, ratio) {
+  ratio = Math.max(Math.min(Number(ratio), 1), 0);
+  var r1 = parseInt(c1.substring(1, 3), 16);
+  var g1 = parseInt(c1.substring(3, 5), 16);
+  var b1 = parseInt(c1.substring(5, 7), 16);
+  var r2 = parseInt(c2.substring(1, 3), 16);
+  var g2 = parseInt(c2.substring(3, 5), 16);
+  var b2 = parseInt(c2.substring(5, 7), 16);
+  var r = Math.round(r1 * (1 - ratio) + r2 * ratio);
+  var g = Math.round(g1 * (1 - ratio) + g2 * ratio);
+  var b = Math.round(b1 * (1 - ratio) + b2 * ratio);
+  r = ('0' + (r || 0).toString(16)).slice(-2);
+  g = ('0' + (g || 0).toString(16)).slice(-2);
+  b = ('0' + (b || 0).toString(16)).slice(-2);
+  return '#' + r + g + b;
+}
+
+// Describe this function...
+function test_blend() {
+  assertEquals(colourBlend('#ff0000', colourRgb(100, 40, 0), 0.4), '#ff2900', 'blend');
 }
 
 // Describe this function...
@@ -1407,7 +1450,7 @@ function function_1(func_x, func_y) {
 
 // Describe this function...
 function function_2(func_a) {
-  func_a = (typeof func_a === 'number' ? func_a : 0) + 1;
+  func_a = (typeof func_a == 'number' ? func_a : 0) + 1;
   return String(func_a) + String(func_c);
 }
 
@@ -1514,7 +1557,6 @@ test_lists_length();
 test_find_lists_simple();
 test_find_lists_complex();
 test_get_lists_simple();
-test_get_lists_create_list();
 test_get_lists_complex();
 test_getRemove();
 test_remove();
@@ -1528,6 +1570,15 @@ test_sort_alphabetic();
 test_sort_ignoreCase();
 test_sort_numeric();
 test_lists_reverse();
+console.log(unittest_report());
+unittestResults = null;
+
+unittestResults = [];
+console.log('\n====================\n\nRunning suite: Colour')
+test_colour_picker();
+test_blend();
+test_rgb();
+test_colour_random();
 console.log(unittest_report());
 unittestResults = null;
 

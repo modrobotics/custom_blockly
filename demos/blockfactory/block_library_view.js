@@ -1,12 +1,25 @@
 /**
  * @license
  * Copyright 2016 Google LLC
- * SPDX-License-Identifier: Apache-2.0
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 /**
  * @fileoverview Javascript for BlockLibraryView class. It manages the display
  * of the Block Library dropdown, save, and delete buttons.
+ *
+ * @author quachtina96 (Tina Quach)
  */
 
 'use strict';
@@ -62,7 +75,7 @@ BlockLibraryView.prototype.setSelectedBlockType = function(blockTypeToSelect) {
   // if null or invalid block type selected.
   for (var blockType in this.optionMap) {
     var option = this.optionMap[blockType];
-    if (blockType === blockTypeToSelect) {
+    if (blockType == blockTypeToSelect) {
       this.selectOption_(option);
     } else {
       this.deselectOption_(option);
@@ -125,7 +138,7 @@ BlockLibraryView.prototype.updateButtons =
 
       // If block type is the default, 'block_type', make button red to alert
       // user.
-      if (blockType === 'block_type') {
+      if (blockType == 'block_type') {
         buttonFormatClass = 'button_alert';
       }
       this.saveButton.classList.add(buttonFormatClass);

@@ -1,4 +1,8 @@
-runtime: python312
+application: blockly-demo
+version: 20200123
+runtime: python27
+api_version: 1
+threadsafe: no
 
 handlers:
 # Redirect obsolete URLs.
@@ -14,68 +18,30 @@ handlers:
 - url: /static/apps/.*
   static_files: redirect.html
   upload: redirect.html
-# Certain demos were moved on 25 Nov 2022.
-- url: /static/demos/fixed/.*
-  static_files: redirect.html
-  upload: redirect.html
-- url: /static/demos/resizable/.*
-  static_files: redirect.html
-  upload: redirect.html
-- url: /static/demos/toolbox/.*
-  static_files: redirect.html
-  upload: redirect.html
-- url: /static/demos/maxBlocks/.*
-  static_files: redirect.html
-  upload: redirect.html
-- url: /static/demos/generator/.*
-  static_files: redirect.html
-  upload: redirect.html
-- url: /static/demos/headless/.*
-  static_files: redirect.html
-  upload: redirect.html
-- url: /static/demos/interpreter/step-execution.*
-  static_files: redirect.html
-  upload: redirect.html
-- url: /static/demos/interpreter/async-execution.*
-  static_files: redirect.html
-  upload: redirect.html
-- url: /static/demos/graph/.*
-  static_files: redirect.html
-  upload: redirect.html
-- url: /static/demos/rtl/.*
-  static_files: redirect.html
-  upload: redirect.html
-- url: /static/demos/custom-dialogs/.*
-  static_files: redirect.html
-  upload: redirect.html
-- url: /static/demos/custom-fields/turtle/.*
-  static_files: redirect.html
-  upload: redirect.html
-- url: /static/demos/custom-fields/pitch/.*
-  static_files: redirect.html
-  upload: redirect.html
-- url: /static/demos/mirror/.*
-  static_files: redirect.html
-  upload: redirect.html
-- url: /static/demos/plane/.*
-  static_files: redirect.html
-  upload: redirect.html
-- url: /static/demos/keyboard_nav/.*
-  static_files: redirect.html
-  upload: redirect.html
-- url: /static/demos/custom-fields/.*
-  static_files: redirect.html
-  upload: redirect.html
+
+
+# Storage API.
+- url: /storage
+  script: storage.py
+  secure: always
+- url: /storage\.js
+  static_files: storage.js
+  upload: storage\.js
+  secure: always
 
 # Blockly files.
 - url: /static
   static_dir: static
   secure: always
 
-# Storage API.
-- url: /storage\.js
-  static_files: storage.js
-  upload: storage\.js
+# Closure library for uncompressed Blockly.
+- url: /closure-library
+  static_dir: closure-library
+  secure: always
+
+# Redirect for root directory.
+- url: /
+  script: index_redirect.py
   secure: always
 
 # Favicon.
@@ -98,7 +64,24 @@ handlers:
   upload: robots\.txt
   secure: always
 
-# Dynamic content.
-- url: /.*
-  script: auto
-  secure: always
+
+skip_files:
+# App Engine default patterns.
+- ^(.*/)?#.*#$
+- ^(.*/)?.*~$
+- ^(.*/)?.*\.py[co]$
+- ^(.*/)?.*/RCS/.*$
+- ^(.*/)?\..*$
+# Custom skip patterns.
+- ^static/appengine/.*$
+- ^static/demos/plane/soy/.+\.jar$
+- ^static/demos/plane/template.soy$
+- ^static/demos/plane/xlf/.*$
+- ^static/i18n/.*$
+- ^static/msg/json/.*$
+- ^.+\.soy$
+- ^closure-library/.*_test.html$
+- ^closure-library/.*_test.js$
+- ^closure-library/closure/bin/.*$
+- ^closure-library/doc/.*$
+- ^closure-library/scripts/.*$

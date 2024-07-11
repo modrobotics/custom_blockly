@@ -7,13 +7,14 @@
 
 <!-- TODO: Verify the following, checking each box with an 'x' between the brackets: [x] -->
 
-- [ ] I [validated my changes](https://developers.google.com/blockly/guides/contribute/core#making_and_verifying_a_change)
+- [ ] I branched from develop
+- [ ] My pull request is against develop
+- [ ] My code follows the [style guide](https://developers.google.com/blockly/guides/modify/web/style-guide)
 
 ## The details
 ### Resolves
 
 <!-- TODO: What Github issue does this resolve? Please include a link. -->
-Fixes 
 
 ### Proposed Changes
 
@@ -25,11 +26,27 @@ Fixes
 
 ### Test Coverage
 
-<!-- TODO: Please create unit tests, and explain here how they cover
-           your changes, or tell us how you tested it manually. If
-           your changes include browser-specific behaviour, include
-           information about the browser and device that you used for
-           testing. -->
+<!-- TODO: Please show how you have added tests to cover your changes,
+  -        or tell us how you tested it. For each systems you tested,
+  -        uncomment the systems in the list below.
+  -->
+
+Tested on:
+<!-- * Desktop Chrome -->
+<!-- * Desktop Firefox -->
+<!-- * Desktop Safari -->
+<!-- * Desktop Opera -->
+<!-- * Windows Internet Explorer 10 -->
+<!-- * Windows Internet Explorer 11 -->
+<!-- * Windows Edge -->
+
+<!--
+* Smartphone/Tablet/Chromebook (please complete the following information):
+  * Device: [e.g. iPhone6]
+  * OS: [e.g. iOS8.1]
+  * Browser [e.g. stock browser, safari]
+  * Version [e.g. 22]
+-->
 
 ### Documentation
 

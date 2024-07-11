@@ -1,17 +1,30 @@
 /**
  * @license
  * Copyright 2016 Google LLC
- * SPDX-License-Identifier: Apache-2.0
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 /**
  * @fileoverview Stores and updates information about state and categories
  * in workspace factory. Each list element is either a separator or a category,
- * and each category stores its name, XML to load that category, colour,
+ * and each category stores its name, XML to load that category, color,
  * custom tags, and a unique ID making it possible to change category names and
  * move categories easily. Keeps track of the currently selected list
  * element. Also keeps track of all the user-created shadow blocks and
  * manipulates them as necessary.
+ *
+ * @author Emma Dauterman (evd2014)
  */
 
 /**
@@ -52,8 +65,8 @@ WorkspaceFactoryModel = function() {
  */
 WorkspaceFactoryModel.prototype.hasCategoryByName = function(name) {
   for (var i = 0; i < this.toolboxList.length; i++) {
-    if (this.toolboxList[i].type === ListElement.TYPE_CATEGORY &&
-        this.toolboxList[i].name === name) {
+    if (this.toolboxList[i].type == ListElement.TYPE_CATEGORY &&
+        this.toolboxList[i].name == name) {
       return true;
     }
   }
@@ -93,9 +106,9 @@ WorkspaceFactoryModel.prototype.hasElements = function() {
  */
 WorkspaceFactoryModel.prototype.addElementToList = function(element) {
   // Update state if the copied category has a custom tag.
-  this.hasVariableCategory = element.custom === 'VARIABLE' ? true :
+  this.hasVariableCategory = element.custom == 'VARIABLE' ? true :
       this.hasVariableCategory;
-  this.hasProcedureCategory = element.custom === 'PROCEDURE' ? true :
+  this.hasProcedureCategory = element.custom == 'PROCEDURE' ? true :
       this.hasProcedureCategory;
   // Add element to toolboxList.
   this.toolboxList.push(element);
@@ -113,9 +126,9 @@ WorkspaceFactoryModel.prototype.deleteElementFromList = function(index) {
     return; // No entry to delete.
   }
   // Check if need to update flags.
-  this.hasVariableCategory = this.toolboxList[index].custom === 'VARIABLE' ?
+  this.hasVariableCategory = this.toolboxList[index].custom == 'VARIABLE' ?
       false : this.hasVariableCategory;
-  this.hasProcedureCategory = this.toolboxList[index].custom === 'PROCEDURE' ?
+  this.hasProcedureCategory = this.toolboxList[index].custom == 'PROCEDURE' ?
       false : this.hasProcedureCategory;
   // Remove element.
   this.toolboxList.splice(index, 1);
@@ -128,7 +141,7 @@ WorkspaceFactoryModel.prototype.deleteElementFromList = function(index) {
  * of blocks displayed.
  */
 WorkspaceFactoryModel.prototype.createDefaultSelectedIfEmpty = function() {
-  if (this.toolboxList.length === 0) {
+  if (this.toolboxList.length == 0) {
     this.flyout = new ListElement(ListElement.TYPE_FLYOUT);
     this.selected = this.flyout;
   }
@@ -156,7 +169,7 @@ WorkspaceFactoryModel.prototype.moveElementToIndex = function(element, newIndex,
 
 /**
  * Returns the ID of the currently selected element. Returns null if there are
- * no categories (if selected === null).
+ * no categories (if selected == null).
  * @return {string} The ID of the element currently selected.
  */
 WorkspaceFactoryModel.prototype.getSelectedId = function() {
@@ -165,7 +178,7 @@ WorkspaceFactoryModel.prototype.getSelectedId = function() {
 
 /**
  * Returns the name of the currently selected category. Returns null if there
- * are no categories (if selected === null) or the selected element is not
+ * are no categories (if selected == null) or the selected element is not
  * a category (in which case its name is null).
  * @return {string} The name of the category currently selected.
  */
@@ -198,7 +211,7 @@ WorkspaceFactoryModel.prototype.setSelectedById = function(id) {
  */
 WorkspaceFactoryModel.prototype.getIndexByElementId = function(id) {
   for (var i = 0; i < this.toolboxList.length; i++) {
-    if (this.toolboxList[i].id === id) {
+    if (this.toolboxList[i].id == id) {
       return i;
     }
   }
@@ -213,7 +226,7 @@ WorkspaceFactoryModel.prototype.getIndexByElementId = function(id) {
  */
 WorkspaceFactoryModel.prototype.getElementById = function(id) {
   for (var i = 0; i < this.toolboxList.length; i++) {
-    if (this.toolboxList[i].id === id) {
+    if (this.toolboxList[i].id == id) {
       return this.toolboxList[i];
     }
   }
@@ -244,7 +257,7 @@ WorkspaceFactoryModel.prototype.getSelectedXml = function() {
 
 /**
  * Return ordered list of ListElement objects.
- * @return {!Array<!ListElement>} ordered list of ListElement objects
+ * @return {!Array.<!ListElement>} ordered list of ListElement objects
  */
 WorkspaceFactoryModel.prototype.getToolboxList = function() {
   return this.toolboxList;
@@ -257,7 +270,7 @@ WorkspaceFactoryModel.prototype.getToolboxList = function() {
  */
 WorkspaceFactoryModel.prototype.getCategoryIdByName = function(name) {
   for (var i = 0; i < this.toolboxList.length; i++) {
-    if (this.toolboxList[i].name === name) {
+    if (this.toolboxList[i].name == name) {
       return this.toolboxList[i].id;
     }
   }
@@ -291,7 +304,7 @@ WorkspaceFactoryModel.prototype.addShadowBlock = function(blockId) {
  */
 WorkspaceFactoryModel.prototype.removeShadowBlock = function(blockId) {
   for (var i = 0; i < this.shadowBlocks.length; i++) {
-    if (this.shadowBlocks[i] === blockId) {
+    if (this.shadowBlocks[i] == blockId) {
       this.shadowBlocks.splice(i, 1);
       return;
     }
@@ -306,7 +319,7 @@ WorkspaceFactoryModel.prototype.removeShadowBlock = function(blockId) {
  */
 WorkspaceFactoryModel.prototype.isShadowBlock = function(blockId) {
   for (var i = 0; i < this.shadowBlocks.length; i++) {
-    if (this.shadowBlocks[i] === blockId) {
+    if (this.shadowBlocks[i] == blockId) {
       return true;
     }
   }
@@ -339,14 +352,14 @@ WorkspaceFactoryModel.prototype.getShadowBlocksInWorkspace =
  */
 WorkspaceFactoryModel.prototype.addCustomTag = function(category, tag) {
   // Only update list elements that are categories.
-  if (category.type !== ListElement.TYPE_CATEGORY) {
+  if (category.type != ListElement.TYPE_CATEGORY) {
     return;
   }
   // Only update the tag to be 'VARIABLE' or 'PROCEDURE'.
-  if (tag === 'VARIABLE') {
+  if (tag == 'VARIABLE') {
     this.hasVariableCategory = true;
     category.custom = 'VARIABLE';
-  } else if (tag === 'PROCEDURE') {
+  } else if (tag == 'PROCEDURE') {
     this.hasProcedureCategory = true;
     category.custom = 'PROCEDURE';
   }
@@ -358,7 +371,7 @@ WorkspaceFactoryModel.prototype.addCustomTag = function(category, tag) {
  * @param {!Element} xml The XML to be saved.
  */
 WorkspaceFactoryModel.prototype.savePreloadXml = function(xml) {
-  this.preloadXml = xml;
+  this.preloadXml = xml
 };
 
 /**
@@ -381,7 +394,7 @@ WorkspaceFactoryModel.prototype.setOptions = function(options) {
  * Returns an array of all the block types currently being used in the toolbox
  * and the pre-loaded blocks. No duplicates.
  * TODO(evd2014): Move pushBlockTypesToList to FactoryUtils.
- * @return {!Array<string>} Array of block types currently being used.
+ * @return {!Array.<string>} Array of block types currently being used.
  */
 WorkspaceFactoryModel.prototype.getAllUsedBlockTypes = function() {
   var blockTypeList = [];
@@ -395,7 +408,7 @@ WorkspaceFactoryModel.prototype.getAllUsedBlockTypes = function() {
     // Add block types if not already in list.
     for (var i = 0; i < blocks.length; i++) {
       var type = blocks[i].getAttribute('type');
-      if (!list.includes(type)) {
+      if (list.indexOf(type) == -1) {
         list.push(type);
       }
     }
@@ -408,7 +421,7 @@ WorkspaceFactoryModel.prototype.getAllUsedBlockTypes = function() {
     // If has categories, add block types for each category.
 
     for (var i = 0, category; category = this.toolboxList[i]; i++) {
-      if (category.type === ListElement.TYPE_CATEGORY) {
+      if (category.type == ListElement.TYPE_CATEGORY) {
         pushBlockTypesToList(category.xml, blockTypeList);
       }
     }
@@ -422,7 +435,7 @@ WorkspaceFactoryModel.prototype.getAllUsedBlockTypes = function() {
 
 /**
  * Adds new imported block types to the list of current imported block types.
- * @param {!Array<string>} blockTypes Array of block types imported.
+ * @param {!Array.<string>} blockTypes Array of block types imported.
  */
 WorkspaceFactoryModel.prototype.addImportedBlockTypes = function(blockTypes) {
   this.importedBlockTypes = this.importedBlockTypes.concat(blockTypes);
@@ -430,7 +443,7 @@ WorkspaceFactoryModel.prototype.addImportedBlockTypes = function(blockTypes) {
 
 /**
  * Updates block types in block library.
- * @param {!Array<string>} blockTypes Array of block types in block library.
+ * @param {!Array.<string>} blockTypes Array of block types in block library.
  */
 WorkspaceFactoryModel.prototype.updateLibBlockTypes = function(blockTypes) {
   this.libBlockTypes = blockTypes;
@@ -443,16 +456,16 @@ WorkspaceFactoryModel.prototype.updateLibBlockTypes = function(blockTypes) {
  * @return {boolean} True if blockType is defined, false otherwise.
  */
 WorkspaceFactoryModel.prototype.isDefinedBlockType = function(blockType) {
-  var isStandardBlock =
-      StandardCategories.coreBlockTypes.includes(blockType);
-  var isLibBlock = this.libBlockTypes.includes(blockType);
-  var isImportedBlock = this.importedBlockTypes.includes(blockType);
+  var isStandardBlock = StandardCategories.coreBlockTypes.indexOf(blockType)
+      != -1;
+  var isLibBlock = this.libBlockTypes.indexOf(blockType) != -1;
+  var isImportedBlock = this.importedBlockTypes.indexOf(blockType) != -1;
   return (isStandardBlock || isLibBlock || isImportedBlock);
 };
 
 /**
  * Checks if any of the block types are already defined.
- * @param {!Array<string>} blockTypes Array of block types.
+ * @param {!Array.<string>} blockTypes Array of block types.
  * @return {boolean} True if a block type in the array is already defined,
  *    false if none of the blocks are already defined.
  */
@@ -476,9 +489,9 @@ ListElement = function(type, opt_name) {
   // Name of category. Can be changed by user. Null if separator.
   this.name = opt_name ? opt_name : null;
   // Unique ID of element. Does not change.
-  this.id = Blockly.utils.idGenerator.genUid();
-  // Colour of category. Default is no colour. Null if separator.
-  this.colour = null;
+  this.id = Blockly.utils.genUid();
+  // Color of category. Default is no color. Null if separator.
+  this.color = null;
   // Stores a custom tag, if necessary. Null if no custom tag or separator.
   this.custom = null;
 };
@@ -496,8 +509,8 @@ ListElement.TYPE_FLYOUT = 'flyout';
  */
 ListElement.prototype.saveFromWorkspace = function(workspace) {
   // Only save XML for categories and flyouts.
-  if (this.type === ListElement.TYPE_FLYOUT ||
-      this.type === ListElement.TYPE_CATEGORY) {
+  if (this.type == ListElement.TYPE_FLYOUT ||
+      this.type == ListElement.TYPE_CATEGORY) {
     this.xml = Blockly.Xml.workspaceToDom(workspace);
   }
 };
@@ -508,25 +521,25 @@ ListElement.prototype.saveFromWorkspace = function(workspace) {
  * not a category.
  * @param {string} name New name of category.
  */
-ListElement.prototype.changeName = function(name) {
+ListElement.prototype.changeName = function (name) {
   // Only update list elements that are categories.
-  if (this.type !== ListElement.TYPE_CATEGORY) {
+  if (this.type != ListElement.TYPE_CATEGORY) {
     return;
   }
   this.name = name;
 };
 
 /**
- * Sets the colour of a category. If tries to set the colour of something other
+ * Sets the color of a category. If tries to set the color of something other
  * than a category, returns.
- * @param {?string} colour The colour that should be used for that category,
+ * @param {?string} color The color that should be used for that category,
  *     or null if none.
  */
-ListElement.prototype.changeColour = function(colour) {
-  if (this.type !== ListElement.TYPE_CATEGORY) {
+ListElement.prototype.changeColor = function (color) {
+  if (this.type != ListElement.TYPE_CATEGORY) {
     return;
   }
-  this.colour = colour;
+  this.color = color;
 };
 
 /**
@@ -537,11 +550,11 @@ ListElement.prototype.changeColour = function(colour) {
 ListElement.prototype.copy = function() {
   copy = new ListElement(this.type);
   // Generate a unique ID for the element.
-  copy.id = Blockly.utils.idGenerator.genUid();
+  copy.id = Blockly.utils.genUid();
   // Copy all attributes except ID.
   copy.name = this.name;
   copy.xml = this.xml;
-  copy.colour = this.colour;
+  copy.color = this.color;
   copy.custom = this.custom;
   // Return copy.
   return copy;

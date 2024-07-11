@@ -2,6 +2,11 @@
   "compilerOptions": {
     "target": "es5"
   },
-  "include": ["core/**/**/*", "typings/blockly.d.ts"],
-  "exclude": ["node_modules"]
+  "include": [
+    "core/**/**/*",
+    "typings/blockly.d.ts"
+  ],
+  "exclude": [
+      "node_modules"
+  ]
 }

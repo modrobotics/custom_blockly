@@ -1,21 +1,23 @@
 {
-  "env": {
-    "browser": true,
-    "mocha": true
-  },
-  "globals": {
-    "chai": false,
-    "sinon": false
-  },
-  "rules": {
-    "no-unused-vars": ["off"],
-    // Allow uncommented helper functions in tests.
-    "require-jsdoc": ["off"],
-    "prefer-rest-params": ["off"],
-    "no-invalid-this": ["off"]
-  },
-  "extends": "../../.eslintrc.js",
-  "parserOptions": {
-    "sourceType": "module"
-  }
+    "env": {
+        "browser": true,
+        "mocha": true
+    },
+    "globals": {
+        "chai": false,
+        "sinon": false,
+        "assertNull": true,
+        "assertNotNull": true,
+        "assertEquals": true,
+        "assertTrue": true,
+        "assertFalse": true,
+        "isEqualArrays": true,
+        "assertUndefined": true,
+        "assertNotUndefined": true,
+        "defineStackBlock": true,
+        "defineRowBlock": true,
+        "defineStatementBlock": true
+
+    },
+    "extends": "../../.eslintrc.json"
 }

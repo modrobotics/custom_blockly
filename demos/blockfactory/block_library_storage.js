@@ -1,12 +1,25 @@
 /**
  * @license
  * Copyright 2016 Google LLC
- * SPDX-License-Identifier: Apache-2.0
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 /**
  * @fileoverview Javascript for Block Library's Storage Class.
  * Depends on Block Library for its namespace.
+ *
+ * @author quachtina96 (Tina Quach)
  */
 
 'use strict';
@@ -24,7 +37,7 @@ function BlockLibraryStorage(blockLibraryName, opt_blocks) {
   if (!opt_blocks) {
     // Initialize this.blocks by loading from local storage.
     this.loadFromLocalStorage();
-    if (this.blocks === null) {
+    if (this.blocks == null) {
       this.blocks = Object.create(null);
       // The line above is equivalent of {} except that this object is TRULY
       // empty. It doesn't have built-in attributes/functions such as length or
@@ -89,7 +102,7 @@ BlockLibraryStorage.prototype.removeBlock = function(blockType) {
 BlockLibraryStorage.prototype.getBlockXml = function(blockType) {
   var xml = this.blocks[blockType] || null;
   if (xml) {
-    var xml = Blockly.utils.xml.textToDom(xml);
+    var xml = Blockly.Xml.textToDom(xml);
   }
   return xml;
 };
@@ -98,7 +111,7 @@ BlockLibraryStorage.prototype.getBlockXml = function(blockType) {
 /**
  * Returns map of each block type to its corresponding XML stored in current
  * block library (this.blocks).
- * @param {!Array<string>} blockTypes Types of blocks.
+ * @param {!Array.<string>} blockTypes Types of blocks.
  * @return {!Object} Map of block type to corresponding XML.
  */
 BlockLibraryStorage.prototype.getBlockXmlMap = function(blockTypes) {
@@ -113,7 +126,7 @@ BlockLibraryStorage.prototype.getBlockXmlMap = function(blockTypes) {
 
 /**
  * Returns array of all block types stored in current block library.
- * @return {!Array<string>} Array of block types stored in library.
+ * @return {!Array.<string>} Array of block types stored in library.
  */
 BlockLibraryStorage.prototype.getBlockTypes = function() {
   return Object.keys(this.blocks);
@@ -132,7 +145,7 @@ BlockLibraryStorage.prototype.isEmpty = function() {
 
 /**
  * Returns array of all block types stored in current block library.
- * @return {!Array<string>} Map of block type to corresponding XML text.
+ * @return {!Array.<string>} Map of block type to corresponding XML text.
  */
 BlockLibraryStorage.prototype.getBlockXmlTextMap = function() {
   return this.blocks;

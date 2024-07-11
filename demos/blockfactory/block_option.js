@@ -1,7 +1,18 @@
 /**
  * @license
  * Copyright 2016 Google LLC
- * SPDX-License-Identifier: Apache-2.0
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 /**
@@ -9,6 +20,8 @@
  * of the various blocks that you may select in the Block Selector. Each block
  * option has a checkbox, a label, and a preview workspace through which to
  * view the block.
+ *
+ * @author quachtina96 (Tina Quach)
  */
 'use strict';
 
@@ -44,9 +57,9 @@ var BlockOption = function(blockSelector, blockType, previewBlockXml) {
 };
 
 /**
- * Creates the DOM for a single block option. Includes checkbox, label, and div
+ * Creates the dom for a single block option. Includes checkbox, label, and div
  * in which to inject the preview block.
- * @return {!Element} Root node of the selector DOM which consists of a
+ * @return {!Element} Root node of the selector dom which consists of a
  * checkbox, a label, and a fixed size preview workspace per block.
  */
 BlockOption.prototype.createDom = function() {

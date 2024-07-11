@@ -1,21 +1,33 @@
 /**
  * @license
  * Copyright 2015 Google LLC
- * SPDX-License-Identifier: Apache-2.0
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 /**
  * @fileoverview Generating PHP for unit test blocks.
+ * @author daarond@gmail.com (Daaron Dwyer)
  */
 'use strict';
 
-phpGenerator.forBlock['unittest_main'] = function(block) {
+Blockly.PHP['unittest_main'] = function(block) {
   // Container for unit tests.
-  var resultsVar = phpGenerator.nameDB_.getName('unittestResults',
+  var resultsVar = Blockly.PHP.variableDB_.getName('unittestResults',
       Blockly.Names.DEVELOPER_VARIABLE_TYPE);
-  var functionName = phpGenerator.provideFunction_(
+  var functionName = Blockly.PHP.provideFunction_(
       'unittest_report',
-      [ 'function ' + phpGenerator.FUNCTION_NAME_PLACEHOLDER_ + '() {',
+      [ 'function ' + Blockly.PHP.FUNCTION_NAME_PLACEHOLDER_ + '() {',
           '  global ' + resultsVar + ';',
           '  // Create test report.',
           '  $report = array();',
@@ -51,7 +63,7 @@ phpGenerator.forBlock['unittest_main'] = function(block) {
       block.getFieldValue('SUITE_NAME') +
        '\\n");\n';
   // Run tests (unindented).
-  code += phpGenerator.statementToCode(block, 'DO')
+  code += Blockly.PHP.statementToCode(block, 'DO')
       .replace(/^  /, '').replace(/\n  /g, '\n');
   // Send the report to the console (that's where errors will go anyway).
   code += 'print(' + functionName + '());\n';
@@ -60,12 +72,12 @@ phpGenerator.forBlock['unittest_main'] = function(block) {
   return code;
 };
 
-function phpDefineAssert() {
-  var resultsVar = phpGenerator.nameDB_.getName('unittestResults',
+Blockly.PHP['unittest_main'].defineAssert_ = function(block) {
+  var resultsVar = Blockly.PHP.variableDB_.getName('unittestResults',
       Blockly.Names.DEVELOPER_VARIABLE_TYPE);
-  var functionName = phpGenerator.provideFunction_(
+  var functionName = Blockly.PHP.provideFunction_(
       'assertEquals',
-      ['function ' + phpGenerator.FUNCTION_NAME_PLACEHOLDER_ +
+      ['function ' + Blockly.PHP.FUNCTION_NAME_PLACEHOLDER_ +
       '($actual, $expected, $message) {',
       '  global ' + resultsVar + ';',
       '  // Asserts that a value equals another value.',
@@ -86,24 +98,24 @@ function phpDefineAssert() {
   return functionName;
 };
 
-phpGenerator.forBlock['unittest_assertequals'] = function(block) {
+Blockly.PHP['unittest_assertequals'] = function(block) {
   // Asserts that a value equals another value.
-  var message = phpGenerator.valueToCode(block, 'MESSAGE',
-    phpGenerator.ORDER_NONE) || '';
-  var actual = phpGenerator.valueToCode(block, 'ACTUAL',
-          phpGenerator.ORDER_NONE) || 'null';
-  var expected = phpGenerator.valueToCode(block, 'EXPECTED',
-          phpGenerator.ORDER_NONE) || 'null';
-  return phpDefineAssert() +
+  var message = Blockly.PHP.valueToCode(block, 'MESSAGE',
+    Blockly.PHP.ORDER_NONE) || '';
+  var actual = Blockly.PHP.valueToCode(block, 'ACTUAL',
+          Blockly.PHP.ORDER_COMMA) || 'null';
+  var expected = Blockly.PHP.valueToCode(block, 'EXPECTED',
+          Blockly.PHP.ORDER_COMMA) || 'null';
+  return Blockly.PHP['unittest_main'].defineAssert_() +
       '(' + actual + ', ' + expected + ', ' + message + ');\n';
 };
 
-phpGenerator.forBlock['unittest_assertvalue'] = function(block) {
+Blockly.PHP['unittest_assertvalue'] = function(block) {
   // Asserts that a value is true, false, or null.
-  var message = phpGenerator.valueToCode(block, 'MESSAGE',
-    phpGenerator.ORDER_NONE) || '';
-  var actual = phpGenerator.valueToCode(block, 'ACTUAL',
-          phpGenerator.ORDER_NONE) || 'null';
+  var message = Blockly.PHP.valueToCode(block, 'MESSAGE',
+    Blockly.PHP.ORDER_NONE) || '';
+  var actual = Blockly.PHP.valueToCode(block, 'ACTUAL',
+          Blockly.PHP.ORDER_COMMA) || 'null';
   var expected = block.getFieldValue('EXPECTED');
   if (expected == 'TRUE') {
       expected = 'true';
@@ -112,18 +124,18 @@ phpGenerator.forBlock['unittest_assertvalue'] = function(block) {
   } else if (expected == 'NULL') {
       expected = 'null';
   }
-  return phpDefineAssert() +
+  return Blockly.PHP['unittest_main'].defineAssert_() +
       '(' + actual + ', ' + expected + ', ' + message + ');\n';
 };
 
-phpGenerator.forBlock['unittest_fail'] = function(block) {
+Blockly.PHP['unittest_fail'] = function(block) {
   // Always assert an error.
-  var resultsVar = phpGenerator.nameDB_.getName('unittestResults',
+  var resultsVar = Blockly.PHP.variableDB_.getName('unittestResults',
       Blockly.Names.DEVELOPER_VARIABLE_TYPE);
-  var message = phpGenerator.quote_(block.getFieldValue('MESSAGE'));
-  var functionName = phpGenerator.provideFunction_(
+  var message = Blockly.PHP.quote_(block.getFieldValue('MESSAGE'));
+  var functionName = Blockly.PHP.provideFunction_(
       'unittest_fail',
-      [ 'function ' + phpGenerator.FUNCTION_NAME_PLACEHOLDER_ +
+      [ 'function ' + Blockly.PHP.FUNCTION_NAME_PLACEHOLDER_ +
       '($message) {',
           '  global ' + resultsVar + ';',
           '  // Always assert an error.',
@@ -135,20 +147,20 @@ phpGenerator.forBlock['unittest_fail'] = function(block) {
   return functionName + '(' + message + ');\n';
 };
 
-phpGenerator.forBlock['unittest_adjustindex'] = function(block) {
-  var index = phpGenerator.valueToCode(block, 'INDEX',
-      phpGenerator.ORDER_ADDITION) || '0';
+Blockly.PHP['unittest_adjustindex'] = function(block) {
+  var index = Blockly.PHP.valueToCode(block, 'INDEX',
+      Blockly.PHP.ORDER_ADDITION) || '0';
   // Adjust index if using one-based indexing.
   if (block.workspace.options.oneBasedIndex) {
-    if (Blockly.utils.string.isNumber(index)) {
+    if (Blockly.isNumber(index)) {
       // If the index is a naked number, adjust it right now.
-      return [Number(index) + 1, phpGenerator.ORDER_ATOMIC];
+      return [Number(index) + 1, Blockly.PHP.ORDER_ATOMIC];
     } else {
       // If the index is dynamic, adjust it in code.
-      index += ' + 1';
+      index = index + ' + 1';
     }
-  } else if (Blockly.utils.string.isNumber(index)) {
-    return [index, phpGenerator.ORDER_ATOMIC];
+  } else if (Blockly.isNumber(index)) {
+    return [index, Blockly.PHP.ORDER_ATOMIC];
   }
-  return [index, phpGenerator.ORDER_ADDITION];
+  return [index, Blockly.PHP.ORDER_ADDITION];
 };

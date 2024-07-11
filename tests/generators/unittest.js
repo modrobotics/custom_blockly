@@ -1,11 +1,23 @@
 /**
  * @license
  * Copyright 2012 Google LLC
- * SPDX-License-Identifier: Apache-2.0
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 /**
  * @fileoverview Unit test blocks for Blockly.
+ * @author fraser@google.com (Neil Fraser)
  */
 'use strict';
 
@@ -20,7 +32,7 @@ Blockly.Blocks['unittest_main'] = {
     this.setTooltip('Executes the enclosed unit tests,\n' +
                     'then prints a summary.');
   },
-  getDeveloperVariables: function() {
+  getDeveloperVars: function() {
     return ['unittestResults'];
   }
 };
@@ -40,7 +52,7 @@ Blockly.Blocks['unittest_assertequals'] = {
         .appendField('expected');
     this.setTooltip('Tests that "actual == expected".');
   },
-  getDeveloperVariables: function() {
+  getDeveloperVars: function() {
     return ['unittestResults'];
   }
 };
@@ -60,7 +72,7 @@ Blockly.Blocks['unittest_assertvalue'] = {
         [['true', 'TRUE'], ['false', 'FALSE'], ['null', 'NULL']]), 'EXPECTED');
     this.setTooltip('Tests that the value is true, false, or null.');
   },
-  getDeveloperVariables: function() {
+  getDeveloperVars: function() {
     return ['unittestResults'];
   }
 };
@@ -76,7 +88,7 @@ Blockly.Blocks['unittest_fail'] = {
         .appendField('fail');
     this.setTooltip('Records an error.');
   },
-  getDeveloperVariables: function() {
+  getDeveloperVars: function() {
     return ['unittestResults'];
   }
 };

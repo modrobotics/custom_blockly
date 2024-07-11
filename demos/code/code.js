@@ -1,11 +1,23 @@
 /**
  * @license
  * Copyright 2012 Google LLC
- * SPDX-License-Identifier: Apache-2.0
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 /**
  * @fileoverview JavaScript for Blockly's Code demo.
+ * @author fraser@google.com (Neil Fraser)
  */
 'use strict';
 
@@ -32,7 +44,6 @@ Code.LANGUAGE_NAME = {
   'fa': 'فارسی',
   'fr': 'Français',
   'he': 'עברית',
-  'hr': 'Hrvatski',
   'hrx': 'Hunsrik',
   'hu': 'Magyar',
   'ia': 'Interlingua',
@@ -106,7 +117,7 @@ Code.getLang = function() {
  * @return {boolean} True if RTL, false if LTR.
  */
 Code.isRtl = function() {
-  return Code.LANGUAGE_RTL.includes(Code.LANG);
+  return Code.LANGUAGE_RTL.indexOf(Code.LANG) != -1;
 };
 
 /**
@@ -127,11 +138,11 @@ Code.loadBlocks = function(defaultXml) {
   } else if (loadOnce) {
     // Language switching stores the blocks during the reload.
     delete window.sessionStorage.loadOnceBlocks;
-    var xml = Blockly.utils.xml.textToDom(loadOnce);
+    var xml = Blockly.Xml.textToDom(loadOnce);
     Blockly.Xml.domToWorkspace(xml, Code.workspace);
   } else if (defaultXml) {
     // Load the editor with default starting blocks.
-    var xml = Blockly.utils.xml.textToDom(defaultXml);
+    var xml = Blockly.Xml.textToDom(defaultXml);
     Blockly.Xml.domToWorkspace(xml, Code.workspace);
   } else if ('BlocklyStorage' in window) {
     // Restore saved blocks in a separate thread so that subsequent
@@ -184,16 +195,11 @@ Code.changeCodingLanguage = function() {
  * @param {!Function} func Event handler to bind.
  */
 Code.bindClick = function(el, func) {
-  if (typeof el === 'string') {
+  if (typeof el == 'string') {
     el = document.getElementById(el);
   }
   el.addEventListener('click', func, true);
-  function touchFunc(e) {
-    // Prevent code from being executed twice on touchscreens.
-    e.preventDefault();
-    func(e);
-  }
-  el.addEventListener('touchend', touchFunc, true);
+  el.addEventListener('touchend', func, true);
 };
 
 /**
@@ -201,7 +207,7 @@ Code.bindClick = function(el, func) {
  */
 Code.importPrettify = function() {
   var script = document.createElement('script');
-  script.setAttribute('src', 'https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js');
+  script.setAttribute('src', 'https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js');
   document.head.appendChild(script);
 };
 
@@ -239,16 +245,14 @@ Code.LANG = Code.getLang();
  * List of tab names.
  * @private
  */
-Code.TABS_ = [
-  'blocks', 'javascript', 'php', 'python', 'dart', 'lua', 'xml', 'json'
-];
+Code.TABS_ = ['blocks', 'javascript', 'php', 'python', 'dart', 'lua', 'xml'];
 
 /**
  * List of tab names with casing, for display in the UI.
  * @private
  */
 Code.TABS_DISPLAY_ = [
-  'Blocks', 'JavaScript', 'PHP', 'Python', 'Dart', 'Lua', 'XML', 'JSON'
+  'Blocks', 'JavaScript', 'PHP', 'Python', 'Dart', 'Lua', 'XML',
 ];
 
 Code.selected = 'blocks';
@@ -264,10 +268,10 @@ Code.tabClick = function(clickedName) {
     var xmlText = xmlTextarea.value;
     var xmlDom = null;
     try {
-      xmlDom = Blockly.utils.xml.textToDom(xmlText);
+      xmlDom = Blockly.Xml.textToDom(xmlText);
     } catch (e) {
-      var q = window.confirm(
-          MSG['parseError'].replace(/%1/g, 'XML').replace('%2', e));
+      var q =
+          window.confirm(MSG['badXml'].replace('%1', e));
       if (!q) {
         // Leave the user on the XML tab.
         return;
@@ -276,25 +280,6 @@ Code.tabClick = function(clickedName) {
     if (xmlDom) {
       Code.workspace.clear();
       Blockly.Xml.domToWorkspace(xmlDom, Code.workspace);
-    }
-  }
-
-  if (document.getElementById('tab_json').classList.contains('tabon')) {
-    var jsonTextarea = document.getElementById('content_json');
-    var jsonText = jsonTextarea.value;
-    var json = null;
-    try {
-      json = JSON.parse(jsonText);
-    } catch (e) {
-      var q = window.confirm(
-          MSG['parseError'].replace(/%1/g, 'JSON').replace('%2', e));
-      if (!q) {
-        // Leave the user on the JSON tab.
-        return;
-      }
-    }
-    if (json) {
-      Blockly.serialization.workspaces.load(json, Code.workspace);
     }
   }
 
@@ -321,7 +306,7 @@ Code.tabClick = function(clickedName) {
   Code.renderContent();
   // The code menu tab is on if the blocks tab is off.
   var codeMenuTab = document.getElementById('tab_code');
-  if (clickedName === 'blocks') {
+  if (clickedName == 'blocks') {
     Code.workspace.setVisible(true);
     codeMenuTab.className = 'taboff';
   } else {
@@ -330,7 +315,7 @@ Code.tabClick = function(clickedName) {
   // Sync the menu's value with the clicked tab value if needed.
   var codeMenu = document.getElementById('code_menu');
   for (var i = 0; i < codeMenu.options.length; i++) {
-    if (codeMenu.options[i].value === clickedName) {
+    if (codeMenu.options[i].value == clickedName) {
       codeMenu.selectedIndex = i;
       break;
     }
@@ -344,36 +329,31 @@ Code.tabClick = function(clickedName) {
 Code.renderContent = function() {
   var content = document.getElementById('content_' + Code.selected);
   // Initialize the pane.
-  if (content.id === 'content_xml') {
+  if (content.id == 'content_xml') {
     var xmlTextarea = document.getElementById('content_xml');
     var xmlDom = Blockly.Xml.workspaceToDom(Code.workspace);
     var xmlText = Blockly.Xml.domToPrettyText(xmlDom);
     xmlTextarea.value = xmlText;
     xmlTextarea.focus();
-  } else if (content.id === 'content_json') {
-    var jsonTextarea = document.getElementById('content_json');
-    jsonTextarea.value = JSON.stringify(
-        Blockly.serialization.workspaces.save(Code.workspace), null, 2);
-    jsonTextarea.focus();
-  } else if (content.id === 'content_javascript') {
-    Code.attemptCodeGeneration(javascript.javascriptGenerator);
-  } else if (content.id === 'content_python') {
-    Code.attemptCodeGeneration(python.pythonGenerator);
-  } else if (content.id === 'content_php') {
-    Code.attemptCodeGeneration(php.phpGenerator);
-  } else if (content.id === 'content_dart') {
-    Code.attemptCodeGeneration(dart.dartGenerator);
-  } else if (content.id === 'content_lua') {
-    Code.attemptCodeGeneration(lua.luaGenerator);
+  } else if (content.id == 'content_javascript') {
+    Code.attemptCodeGeneration(Blockly.JavaScript);
+  } else if (content.id == 'content_python') {
+    Code.attemptCodeGeneration(Blockly.Python);
+  } else if (content.id == 'content_php') {
+    Code.attemptCodeGeneration(Blockly.PHP);
+  } else if (content.id == 'content_dart') {
+    Code.attemptCodeGeneration(Blockly.Dart);
+  } else if (content.id == 'content_lua') {
+    Code.attemptCodeGeneration(Blockly.Lua);
   }
-  if (typeof PR === 'object') {
+  if (typeof PR == 'object') {
     PR.prettyPrint();
   }
 };
 
 /**
  * Attempt to generate the code and display it in the UI, pretty printed.
- * @param generator {!Blockly.CodeGenerator} The generator to use.
+ * @param generator {!Blockly.Generator} The generator to use.
  */
 Code.attemptCodeGeneration = function(generator) {
   var content = document.getElementById('content_' + Code.selected);
@@ -388,25 +368,25 @@ Code.attemptCodeGeneration = function(generator) {
 
 /**
  * Check whether all blocks in use have generator functions.
- * @param generator {!Blockly.CodeGenerator} The generator to use.
+ * @param generator {!Blockly.Generator} The generator to use.
  */
 Code.checkAllGeneratorFunctionsDefined = function(generator) {
   var blocks = Code.workspace.getAllBlocks(false);
   var missingBlockGenerators = [];
   for (var i = 0; i < blocks.length; i++) {
     var blockType = blocks[i].type;
-    if (!generator.forBlock[blockType]) {
-      if (!missingBlockGenerators.includes(blockType)) {
+    if (!generator[blockType]) {
+      if (missingBlockGenerators.indexOf(blockType) == -1) {
         missingBlockGenerators.push(blockType);
       }
     }
   }
 
-  var valid = missingBlockGenerators.length === 0;
+  var valid = missingBlockGenerators.length == 0;
   if (!valid) {
     var msg = 'The generator code for the following blocks not specified for ' +
         generator.name_ + ':\n - ' + missingBlockGenerators.join('\n - ');
-    Blockly.dialog.alert(msg);  // Assuming synchronous. No callback.
+    Blockly.alert(msg);  // Assuming synchronous. No callback.
   }
   return valid;
 };
@@ -450,7 +430,7 @@ Code.init = function() {
   // TODO: Clean up the message files so this is done explicitly instead of
   // through this for-loop.
   for (var messageKey in MSG) {
-    if (messageKey.startsWith('cat')) {
+    if (messageKey.indexOf('cat') == 0) {
       Blockly.Msg[messageKey.toUpperCase()] = MSG[messageKey];
     }
   }
@@ -459,7 +439,7 @@ Code.init = function() {
   var toolboxText = document.getElementById('toolbox').outerHTML;
   toolboxText = toolboxText.replace(/(^|[^%]){(\w+)}/g,
       function(m, p1, p2) {return p1 + MSG[p2];});
-  var toolboxXml = Blockly.utils.xml.textToDom(toolboxText);
+  var toolboxXml = Blockly.Xml.textToDom(toolboxText);
 
   Code.workspace = Blockly.inject('content_blocks',
       {grid:
@@ -477,7 +457,7 @@ Code.init = function() {
 
   // Add to reserved word list: Local variables in execution environment (runJS)
   // and the infinite loop detection function.
-  javascript.javascriptGenerator.addReservedWords('code,timeouts,checkTimeout');
+  Blockly.JavaScript.addReservedWords('code,timeouts,checkTimeout');
 
   Code.loadBlocks('');
 
@@ -497,7 +477,7 @@ Code.init = function() {
     BlocklyStorage['HTTPREQUEST_ERROR'] = MSG['httpRequestError'];
     BlocklyStorage['LINK_ALERT'] = MSG['linkAlert'];
     BlocklyStorage['HASH_ERROR'] = MSG['hashError'];
-    BlocklyStorage['XML_ERROR'] = MSG['loadError'];
+    BlocklyStorage['XML_ERROR'] = MSG['xmlError'];
     Code.bindClick(linkButton,
         function() {BlocklyStorage.link(Code.workspace);});
   } else if (linkButton) {
@@ -552,7 +532,7 @@ Code.initLanguage = function() {
     var tuple = languages[i];
     var lang = tuple[tuple.length - 1];
     var option = new Option(tuple[0], lang);
-    if (lang === Code.LANG) {
+    if (lang == Code.LANG) {
       option.selected = true;
     }
     languageMenu.options.add(option);
@@ -580,23 +560,17 @@ Code.initLanguage = function() {
 /**
  * Execute the user's code.
  * Just a quick and dirty eval.  Catch infinite loops.
- * @param {Event} event Event created from listener bound to the function.
  */
-Code.runJS = function(event) {
-  // Prevent code from being executed twice on touchscreens.
-  if (event.type === 'touchend') {
-    event.preventDefault();
-  }
-
-  javascript.javascriptGenerator.INFINITE_LOOP_TRAP = 'checkTimeout();\n';
+Code.runJS = function() {
+  Blockly.JavaScript.INFINITE_LOOP_TRAP = 'checkTimeout();\n';
   var timeouts = 0;
   var checkTimeout = function() {
     if (timeouts++ > 1000000) {
       throw MSG['timeout'];
     }
   };
-  var code = javascript.javascriptGenerator.workspaceToCode(Code.workspace);
-  javascript.javascriptGenerator.INFINITE_LOOP_TRAP = null;
+  var code = Blockly.JavaScript.workspaceToCode(Code.workspace);
+  Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
   try {
     eval(code);
   } catch (e) {
@@ -621,6 +595,6 @@ Code.discard = function() {
 // Load the Code demo's language strings.
 document.write('<script src="msg/' + Code.LANG + '.js"></script>\n');
 // Load Blockly's language strings.
-document.write('<script src="../../build/msg/' + Code.LANG + '.js"></script>\n');
+document.write('<script src="../../msg/js/' + Code.LANG + '.js"></script>\n');
 
 window.addEventListener('load', Code.init);

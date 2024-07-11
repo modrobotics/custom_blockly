@@ -1,10 +1,9 @@
 {
 	"@metadata": {
 		"authors": [
-			"Chaduvari",
 			"Naidugari Jayanna",
-			"Veeven",
-			"WP MANIKHANTA"
+			"WP MANIKHANTA",
+			"Veeven"
 		]
 	},
 	"VARIABLES_DEFAULT_NAME": "అంశం",
@@ -74,14 +73,14 @@
 	"MATH_ONLIST_OPERATOR_AVERAGE": "జాబితా సగటు",
 	"TEXT_CREATE_JOIN_TITLE_JOIN": "చేరు",
 	"TEXT_LENGTH_TITLE": "%1 పొడువు",
-	"TEXT_ISEMPTY_TITLE": "%1 ఖాళీ",
+	"TEXT_ISEMPTY_TITLE": "% 1 ఖాళీ",
 	"TEXT_CHARAT_FIRST": "మొదటి వర్ణాన్ని పొందు",
 	"TEXT_CHARAT_LAST": "చివరి వర్ణాన్ని పొందు",
 	"TEXT_CHARAT_RANDOM": "యాదృశ్చిక వర్ణాన్ని పొందు",
 	"LISTS_CREATE_WITH_CONTAINER_TITLE_ADD": "జాబితా",
 	"LISTS_INLIST": "జాబితాలో",
 	"LISTS_GET_INDEX_GET": "పొందు",
-	"LISTS_GET_INDEX_GET_REMOVE": "తెచ్చుకుని, తీసెయ్యి",
+	"LISTS_GET_INDEX_GET_REMOVE": "పొందు మరియు తొలగించు",
 	"LISTS_GET_INDEX_REMOVE": "తొలగించు",
 	"LISTS_GET_INDEX_FROM_END": "#చివరి నుండి",
 	"LISTS_GET_INDEX_FIRST": "మొదటి",
@@ -95,7 +94,5 @@
 	"PROCEDURES_DEFNORETURN_PROCEDURE": "ఏదో ఒకటి చేయి",
 	"PROCEDURES_BEFORE_PARAMS": "తో:",
 	"PROCEDURES_CALL_BEFORE_PARAMS": "తో:",
-	"PROCEDURES_DEFRETURN_RETURN": "తిరిగి వెళ్ళు",
-	"DIALOG_OK": "సరే",
-	"DIALOG_CANCEL": "రద్దు"
+	"PROCEDURES_DEFRETURN_RETURN": "తిరిగి వెళ్ళు"
 }

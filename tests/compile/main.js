@@ -1,53 +1,41 @@
 /**
  * @license
  * Copyright 2019 Google LLC
- * SPDX-License-Identifier: Apache-2.0
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
-// Former goog.module ID: Main
-
+goog.provide('Main');
 // Core
 // Either require 'Blockly.requires', or just the components you use:
-/* eslint-disable-next-line no-unused-vars */
-// TODO: I think we need to make sure these get exported?
-// import type {BlocklyOptions} from '../../core/blockly_options.js';
-import {inject} from '../../build/src/core/inject.js';
-import {getMainWorkspace} from '../../build/src/core/common.js';
-import {Msg} from '../../build/src/core/msg.js';
-import '../../build/src/core/renderers/geras/renderer.js';
-import '../../build/src/core/flyout_vertical.js';
-
-// Needed to ensure internal monkey-patching of newBlock is done.
-import '../../build/src/core/blockly.js';
-
+goog.require('Blockly');
+goog.require('Blockly.geras.Renderer');
+goog.require('Blockly.VerticalFlyout');
 // Blocks
-import '../../build/src/blocks/logic.js';
-import '../../build/src/blocks/loops.js';
-import '../../build/src/blocks/math.js';
-import '../../build/src/blocks/text.js';
-import './test_blocks.js';
+goog.require('Blockly.Constants.Logic');
+goog.require('Blockly.Constants.Loops');
+goog.require('Blockly.Constants.Math');
+goog.require('Blockly.Constants.Text');
+goog.require('Blockly.Constants.Lists');
+goog.require('Blockly.Constants.Colour');
+goog.require('Blockly.Constants.Variables');
+goog.require('Blockly.Constants.VariablesDynamic');
+goog.require('Blockly.Blocks.procedures');
+goog.require('Blockly.TestBlocks')
 
-
-function init() {
-  Object.assign(Msg, window['Blockly']['Msg']);
-  inject('blocklyDiv', /** @type {BlocklyOptions} */ ({
-           'toolbox': document.getElementById('toolbox')
-         }));
-}
-window.addEventListener('load', init);
-
-
-// Called externally from our test driver to see if Blockly loaded more or less
-// correctly.  This is not a comprehensive test, but it will catch catastrophic
-// fails (by far the most common cases).
-window['healthCheck'] = function() {
-  // Just check that we have a reasonable number of blocks in the flyout.
-  // Expecting 8 blocks, but leave a wide margin.
-  try {
-    const blockCount =
-        getMainWorkspace().getFlyout().getWorkspace().getTopBlocks().length;
-    return (blockCount > 5 && blockCount < 100);
-  } catch (_e) {
-    return false;
-  }
+Main.init = function() {
+  Blockly.inject('blocklyDiv', {
+    'toolbox': document.getElementById('toolbox')
+  });
 };
+window.addEventListener('load', Main.init);

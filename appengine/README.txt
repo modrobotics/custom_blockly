@@ -11,13 +11,12 @@ structure:
 
 blockly/
  |- app.yaml
- |- deploy
  |- index.yaml
- |- main.py
+ |- index_redirect.py
  |- README.txt
- |- requirements.txt
  |- storage.js
  |- storage.py
+ |- closure-library/  (Optional)
  `- static/
      |- blocks/
      |- core/
@@ -27,7 +26,7 @@ blockly/
      |- msg/
      |- tests/
      |- blockly_compressed.js
-     |- blockly_uncompressed.js
+     |- blockly_uncompressed.js  (Optional)
      |- blocks_compressed.js
      |- dart_compressed.js
      |- javascript_compressed.js
@@ -35,8 +34,11 @@ blockly/
      |- php_compressed.js
      `- python_compressed.js
 
+Instructions for fetching the optional Closure library may be found here:
+  https://developers.google.com/blockly/guides/modify/web/closure
+
 Go to https://appengine.google.com/ and create your App Engine application.
-Modify the 'PROJECT' name in the 'deploy' file to your App Engine application name.
+Modify the 'application' name of app.yaml to your App Engine application name.
 
 Finally, upload this directory structure to your App Engine account,
-then go to http://YOURAPPNAME.appspot.com/
+wait a minute, then go to http://YOURAPPNAME.appspot.com/

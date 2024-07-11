@@ -1,11 +1,23 @@
 /**
 
  * Copyright 2017 Google LLC
- * SPDX-License-Identifier: Apache-2.0
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 /**
  * @fileoverview JavaScript for Blockly's Minimap demo.
+ * @author karnpurohit@gmail.com (Karan Purohit)
  */
 'use strict';
 
@@ -34,7 +46,7 @@ Minimap.init = function(workspace, minimap) {
     // New code starts from here.
 
     // Get the absolutePosition.
-    var absolutePosition = (this.handlePosition_ / this.ratio);
+    var absolutePosition = (this.handlePosition_ / this.ratio_);
 
     // Firing the scroll change listener.
     Minimap.onScrollChange(absolutePosition, this.horizontal_);
@@ -49,7 +61,7 @@ Minimap.init = function(workspace, minimap) {
     // New code starts from here.
 
     // Get the absolutePosition.
-    var absolutePosition = (this.handlePosition_ / this.ratio);
+    var absolutePosition = (this.handlePosition_ / this.ratio_);
 
     // Firing the scroll change listener.
     Minimap.onScrollChange(absolutePosition, this.horizontal_);
@@ -90,9 +102,8 @@ Minimap.init = function(workspace, minimap) {
   this.mapDragger = this.svg.childNodes[0];
 
   // Adding mouse events to the rectangle, to make it Draggable.
-  // Using Blockly.browserEvents.bind to attach mouse/touch listeners.
-  Blockly.browserEvents.bind(
-      this.mapDragger, 'mousedown', null, Minimap.mousedown);
+  // Using Blockly.bindEvent_ to attach mouse/touch listeners.
+  Blockly.bindEvent_(this.mapDragger, 'mousedown', null, Minimap.mousedown);
 
   //When the window change, we need to resize the minimap window.
   window.addEventListener('resize', Minimap.repositionMinimap);
@@ -105,11 +116,11 @@ Minimap.init = function(workspace, minimap) {
 };
 
 Minimap.mousedown = function(e) {
-  // Using Blockly.browserEvents.bind to attach mouse/touch listeners.
-  Minimap.mouseMoveBindData = Blockly.browserEvents.bind(
-      document, 'mousemove', null, Minimap.mousemove);
+  // Using Blockly.bindEvent_ to attach mouse/touch listeners.
+  Minimap.mouseMoveBindData =
+      Blockly.bindEvent_(document, 'mousemove', null, Minimap.mousemove);
   Minimap.mouseUpBindData =
-      Blockly.browserEvents.bind(document, 'mouseup', null, Minimap.mouseup);
+      Blockly.bindEvent_(document, 'mouseup', null, Minimap.mouseup);
 
   Minimap.isDragging = true;
   e.stopPropagation();
@@ -118,8 +129,8 @@ Minimap.mousedown = function(e) {
 Minimap.mouseup = function(e) {
   Minimap.isDragging = false;
   // Removing listeners.
-  Blockly.browserEvents.unbind(Minimap.mouseUpBindData);
-  Blockly.browserEvents.unbind(Minimap.mouseMoveBindData);
+  Blockly.unbindEvent_(Minimap.mouseUpBindData);
+  Blockly.unbindEvent_(Minimap.mouseMoveBindData);
   Minimap.updateMapDragger(e);
   e.stopPropagation();
 };
@@ -133,11 +144,10 @@ Minimap.mousemove = function(e) {
 
 /**
  * Run non-UI events from the main workspace on the minimap.
- * @param {!Blockly.Events.Abstract} event Event that triggered in the main
- *    workspace.
+ * @param {!Event} event Event that triggered in the main workspace.
  */
 Minimap.mirrorEvent = function(event) {
-  if (event.isUiEvent) {
+  if (event.type == Blockly.Events.UI) {
     return;  // Don't mirror UI events.
   }
   // Convert event to JSON.  This could then be transmitted across the net.
@@ -167,7 +177,7 @@ Minimap.setDraggerHeight = function() {
   var draggerHeight = (workspaceMetrics.viewHeight / Minimap.workspace.scale) *
       Minimap.minimap.scale;
   // It's zero when first block is placed.
-  if (draggerHeight === 0) {
+  if (draggerHeight == 0) {
     return;
   }
   Minimap.mapDragger.setAttribute('height', draggerHeight);
@@ -181,7 +191,7 @@ Minimap.setDraggerWidth = function() {
   var draggerWidth = (workspaceMetrics.viewWidth / Minimap.workspace.scale) *
       Minimap.minimap.scale;
   // It's zero when first block is placed.
-  if (draggerWidth === 0) {
+  if (draggerWidth == 0) {
     return;
   }
   Minimap.mapDragger.setAttribute('width', draggerWidth);
@@ -198,7 +208,7 @@ Minimap.scaleMinimap = function() {
   var workspaceMetrics = Minimap.workspace.getMetrics();
   var minimapMetrics = Minimap.minimap.getMetrics();
 
-  // Scaling the minimap such that all the blocks can be seen in the viewport.
+  // Scaling the mimimap such that all the blocks can be seen in the viewport.
   // This padding is default because this is how to scrollbar(in main workspace)
   // is implemented.
   var topPadding = (workspaceMetrics.viewHeight) * Minimap.minimap.scale /

@@ -5,10 +5,10 @@ BLOCKLY_ROOT=../../..
 IOS_RESOURCES=Resources/Non-Localized/Blockly
 
 MORE_FILES_TO_COPY=(
-  "dist/blockly_compressed.js"
-  "dist/blocks_compressed.js"
+  "blockly_compressed.js"
+  "blocks_compressed.js"
   "media"
-  "build/msg"
+  "msg/js"
   )
 
 mkdir -p $IOS_RESOURCES/media

@@ -28,30 +28,16 @@ task copyBlocklyHtmlFile(type: Copy) {
     rename('index.html', 'webview.html')
 }
 
-task copyBlocklyDistFiles(type: Copy) {
-    from('../../../../dist') {
-        include 'blockly_compressed.js', 'blocks_compressed.js'
-    }
-    into project(':app').file('./src/main/assets/blockly')
-}
-
-task copyBlocklyBuildFiles(type: Copy) {
-    from('../../../../build') {
-        include 'msg/**'
-    }
-    into project(':app').file('./src/main/assets/blockly')
-}
-
-task copyBlocklyMediaFiles(type: Copy) {
+task copyBlocklyMoreFiles(type: Copy) {
     from('../../../..') {
-        include 'media/**'
+        include 'blockly_compressed.js', 'blocks_compressed.js', 'msg/js/**', 'media/**'
         exclude 'media/test_*'
     }
     into project(':app').file('./src/main/assets/blockly')
 }
 
 project.afterEvaluate {
-    preBuild.dependsOn(copyBlocklyHtmlFile, copyBlocklyBuildFiles, copyBlocklyDistFiles, copyBlocklyMediaFiles)
+    preBuild.dependsOn(copyBlocklyHtmlFile, copyBlocklyMoreFiles)
 }
 
 dependencies {

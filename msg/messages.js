@@ -1,21 +1,31 @@
 /**
  * @license
  * Copyright 2012 Google LLC
- * SPDX-License-Identifier: Apache-2.0
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 /**
  * @fileoverview English strings.
+ * @author fraser@google.com (Neil Fraser)
  *
- * After modifying this file, run:
- *
- *     npm run generate:langfiles
- *
- * to regenerate json/{en,qqq,constants,synonyms}.json.
+ * After modifying this file, either run "build.py" from the parent directory,
+ * or run (from this directory):
+ * ../i18n/js_to_json.py
+ * to regenerate json/{en,qqq,synonyms}.json.
  *
  * To convert all of the json files to .js files, run:
- *
- *     npm run build:langfiles
+ * ../i18n/create_messages.py json/*.json
  */
 'use strict';
 
@@ -132,7 +142,7 @@ Blockly.Msg.REDO = 'Redo';
 
 // Variable renaming.
 /** @type {string} */
-/// prompt - This message is seen on mobile devices and the Opera browser.  With most browsers, users can edit numeric values in blocks by just clicking and typing.  Opera does not allow this and mobile browsers may have issues with in-line textareas. So we prompt users with this message (usually a popup) to change a value.
+/// prompt - This message is only seen in the Opera browser.  With most browsers, users can edit numeric values in blocks by just clicking and typing.  Opera does not allows this, so we have to open a new window and prompt users with this message to chanage a value.
 Blockly.Msg.CHANGE_VALUE_TITLE = 'Change value:';
 /** @type {string} */
 /// dropdown choice - When the user clicks on a variable block, this is one of the dropdown menu choices.  It is used to rename the current variable.  See [https://github.com/google/blockly/wiki/Variables#dropdown-menu https://github.com/google/blockly/wiki/Variables#dropdown-menu].
@@ -166,13 +176,10 @@ Blockly.Msg.VARIABLE_ALREADY_EXISTS = 'A variable named "%1" already exists.';
 /** @type {string} */
 /// alert - Tells the user that the name they entered is already in use for another type.
 Blockly.Msg.VARIABLE_ALREADY_EXISTS_FOR_ANOTHER_TYPE = 'A variable named "%1" already exists for another type: "%2".';
-/** @type {string} */
-/// alert - Tells the user that the name they entered is already in use as a parameter to a procedure, that the variable they are renaming also exists on. Renaming would create two parameters with the same name, which is not allowed.
-Blockly.Msg.VARIABLE_ALREADY_EXISTS_FOR_A_PARAMETER = 'A variable named "%1" already exists as a parameter in the procedure "%2".';
 
 // Variable deletion.
 /** @type {string} */
-/// confirm - Ask the user to confirm their deletion of multiple uses of a variable.
+/// confirm -  Ask the user to confirm their deletion of multiple uses of a variable.
 Blockly.Msg.DELETE_VARIABLE_CONFIRMATION = 'Delete %1 uses of the "%2" variable?';
 /** @type {string} */
 /// alert - Tell the user that they can't delete a variable because it's part of the definition of a function.
@@ -358,6 +365,46 @@ Blockly.Msg.CONTROLS_IF_ELSE_TITLE_ELSE = Blockly.Msg.CONTROLS_IF_MSG_ELSE;
 /** @type {string} */
 /// tooltip - Describes the 'else' subblock during [https://github.com/google/blockly/wiki/IfElse#block-modification if block modification].
 Blockly.Msg.CONTROLS_IF_ELSE_TOOLTIP = 'Add a final, catch-all condition to the if block.';
+
+/** @type {string} */
+/// button text - Text on a button inside a dialogue window, which will accept or acknowledge the contents of the dialogue when pressed.\n{{Identical|OK}}
+Blockly.Msg.IOS_OK = 'OK';
+/** @type {string} */
+/// button text - Text on a button inside a dialogue window, which will close or cancel the dialogue when pressed.\n{{Identical|Cancel}}
+Blockly.Msg.IOS_CANCEL = 'Cancel';
+/** @type {string} */
+/// alert - Title text for an error dialogue.\n{{Identical|Error}}
+Blockly.Msg.IOS_ERROR = 'Error';
+/** @type {string} */
+/// header text - Title of a section that displays a list of parameters (aka. "inputs") that have been defined for a procedure. This is used inside a dialogue window to configure a procedure.\n{{Identical|Input}}
+Blockly.Msg.IOS_PROCEDURES_INPUTS = 'INPUTS';
+/** @type {string} */
+/// button text - Text on a button which will add a parameter (aka. "input") to a procedure. This is used inside a dialogue window to configure a procedure. NOTE: The "+" should be preserved at the beginning of the text.
+Blockly.Msg.IOS_PROCEDURES_ADD_INPUT = '+ Add Input';
+/** @type {string} */
+/// option text - Text describing an option to allow statements to be added within a procedure. This is used inside a dialogue window to configure a procedure.
+Blockly.Msg.IOS_PROCEDURES_ALLOW_STATEMENTS = 'Allow statements';
+/** @type {string} */
+/// alert - Error message when duplicate parameters (aka. "inputs") have been defined on a procedure. This is used inside a dialogue window to configure procedure parameters.
+Blockly.Msg.IOS_PROCEDURES_DUPLICATE_INPUTS_ERROR = 'This function has duplicate inputs.';
+/** @type {string} */
+/// button text - Text on a button which will open a variable creation dialogue when pressed. NOTE: The "+" should be preserved at the beginning of the text.
+Blockly.Msg.IOS_VARIABLES_ADD_VARIABLE = '+ Add Variable';
+/** @type {string} */
+/// button text - Text on a button inside a variable creation dialogue, which will add a variable when pressed.\n{{Identical|Add}}
+Blockly.Msg.IOS_VARIABLES_ADD_BUTTON = 'Add';
+/** @type {string} */
+/// button text - Text on a button inside a variable rename dialogue, which will rename a variable when pressed.\n{{Identical|Rename}}
+Blockly.Msg.IOS_VARIABLES_RENAME_BUTTON = 'Rename';
+/** @type {string} */
+/// button text - Text on a button inside a variable deletion dialogue, which will delete a variable when pressed.\n{{Identical|Delete}}
+Blockly.Msg.IOS_VARIABLES_DELETE_BUTTON = 'Delete';
+/** @type {string} */
+/// placeholder text - Placeholder text used inside a text input, where a variable name should be entered.
+Blockly.Msg.IOS_VARIABLES_VARIABLE_NAME = 'Variable name';
+/** @type {string} */
+/// alert - Error message that is displayed when the user attempts to create a variable without a name.
+Blockly.Msg.IOS_VARIABLES_EMPTY_NAME_ERROR = 'You can\'t use an empty variable name.';
 
 /** @type {string} */
 /// {{Optional}} url - Information about comparisons.
@@ -586,7 +633,7 @@ Blockly.Msg.MATH_IS_EVEN = 'is even';
 /// dropdown - A number is '''odd''' if it is not a multiple of 2.  For example, 3 is odd (yielding true), but 4 is not (false).  The opposite of "odd" is "even".
 Blockly.Msg.MATH_IS_ODD = 'is odd';
 /** @type {string} */
-/// dropdown - A number is [https://en.wikipedia.org/wiki/Prime_number prime] if it cannot be evenly divided by any positive integers except for 1 and itself.  For example, 5 is prime, but 6 is not because 2 × 3 = 6.
+/// dropdown - A number is [https://en.wikipedia.org/wiki/Prime prime] if it cannot be evenly divided by any positive integers except for 1 and itself.  For example, 5 is prime, but 6 is not because 2 × 3 = 6.
 Blockly.Msg.MATH_IS_PRIME = 'is prime';
 /** @type {string} */
 /// dropdown - A number is '''whole''' if it is an [https://en.wikipedia.org/wiki/Integer integer].  For example, 5 is whole, but 5.1 is not.
@@ -670,7 +717,7 @@ Blockly.Msg.MATH_ONLIST_OPERATOR_MEDIAN = 'median of list';
 /// tooltip - See [https://en.wikipedia.org/wiki/Median median https://en.wikipedia.org/wiki/Median median] for more information.
 Blockly.Msg.MATH_ONLIST_TOOLTIP_MEDIAN = 'Return the median number in the list.';
 /** @type {string} */
-/// dropdown - This finds the most common numbers ([https://en.wikipedia.org/wiki/Mode_(statistics) modes]) in a list.  For example, the modes of the list {1, 3, 9, 3, 9} are {3, 9}.
+/// dropdown - This finds the most common numbers ([https://en.wikipedia.org/wiki/Mode_(statistics) modes]) in a list.  For example, the modes of the list {1, 3, 9, 3, 9}  are {3, 9}.
 Blockly.Msg.MATH_ONLIST_OPERATOR_MODE = 'modes of list';
 /** @type {string} */
 /// tooltip - See [https://en.wikipedia.org/wiki/Mode_(statistics) https://en.wikipedia.org/wiki/Mode_(statistics)] for more information.
@@ -882,7 +929,6 @@ Blockly.Msg.TEXT_CHARAT_LAST = 'get last letter';
 /// [[File:Blockly-text-get.png]]
 Blockly.Msg.TEXT_CHARAT_RANDOM = 'get random letter';
 /** @type {string} */
-/// {{Optional|Supply translation only if your language requires it.  Most do not.}}
 /// block text - Text that goes after the rightmost block/dropdown when getting a single letter from
 /// a piece of text, as in [https://blockly-demo.appspot.com/static/apps/code/index.html#3m23km these
 /// blocks] or shown below.  For most languages, this will be blank.
@@ -955,7 +1001,6 @@ Blockly.Msg.TEXT_GET_SUBSTRING_END_FROM_END = 'to letter # from end';
 /// [[File:Blockly-get-substring.png]]
 Blockly.Msg.TEXT_GET_SUBSTRING_END_LAST = 'to last letter';
 /** @type {string} */
-/// {{Optional|Supply translation only if your language requires it.  Most do not.}}
 /// block text - Text that should go after the rightmost block/dropdown when
 /// [https://github.com/google/blockly/wiki/Text#extracting-a-region-of-text
 /// extracting a region of text].  In most languages, this will be the empty string.
@@ -1117,7 +1162,7 @@ Blockly.Msg.LISTS_CREATE_WITH_ITEM_TOOLTIP = 'Add an item to the list.';
 /// {{Optional}} url - Information about [https://github.com/google/blockly/wiki/Lists#create-list-with creating a list with multiple copies of a single item].
 Blockly.Msg.LISTS_REPEAT_HELPURL = 'https://github.com/google/blockly/wiki/Lists#create-list-with';
 /** @type {string} */
-/// tooltip - See [https://github.com/google/blockly/wiki/Lists#create-list-with creating a list with multiple copies of a single item].
+/// {{Optional}} url - See [https://github.com/google/blockly/wiki/Lists#create-list-with creating a list with multiple copies of a single item].
 Blockly.Msg.LISTS_REPEAT_TOOLTIP = 'Creates a list consisting of the given value repeated the specified number of times.';
 /** @type {string} */
 /// block text - See [https://github.com/google/blockly/wiki/Lists#create-list-with
@@ -1154,9 +1199,9 @@ Blockly.Msg.LISTS_ISEMPTY_TOOLTIP = 'Returns true if the list is empty.';
 Blockly.Msg.LISTS_INLIST = 'in list';
 
 /** @type {string} */
-/// {{Optional}} url - See [https://github.com/google/blockly/wiki/Lists#finding-items-in-a-list
-/// https://github.com/google/blockly/wiki/Lists#finding-items-in-a-list].
-Blockly.Msg.LISTS_INDEX_OF_HELPURL = 'https://github.com/google/blockly/wiki/Lists#finding-items-in-a-list';
+/// {{Optional}} url - See [https://github.com/google/blockly/wiki/Lists#getting-items-from-a-list
+/// https://github.com/google/blockly/wiki/Lists#getting-items-from-a-list].
+Blockly.Msg.LISTS_INDEX_OF_HELPURL = 'https://github.com/google/blockly/wiki/Lists#getting-items-from-a-list';
 /** @type {string} */
 Blockly.Msg.LISTS_INDEX_OF_INPUT_IN_LIST = Blockly.Msg.LISTS_INLIST;
 /** @type {string} */
@@ -1176,9 +1221,7 @@ Blockly.Msg.LISTS_INDEX_OF_LAST = 'find last occurrence of item';
 Blockly.Msg.LISTS_INDEX_OF_TOOLTIP = 'Returns the index of the first/last occurrence of the item in the list. Returns %1 if item is not found.';
 
 /** @type {string} */
-/// {{Optional}} url - See [https://github.com/google/blockly/wiki/Lists#getting-items-from-a-list
-/// https://github.com/google/blockly/wiki/Lists#getting-items-from-a-list].
-Blockly.Msg.LISTS_GET_INDEX_HELPURL = 'https://github.com/google/blockly/wiki/Lists#getting-items-from-a-list';
+Blockly.Msg.LISTS_GET_INDEX_HELPURL = Blockly.Msg.LISTS_INDEX_OF_HELPURL;
 /** @type {string} */
 /// dropdown - Indicates that the user wishes to
 /// [https://github.com/google/blockly/wiki/Lists#getting-a-single-item
@@ -1224,7 +1267,6 @@ Blockly.Msg.LISTS_GET_INDEX_LAST = 'last';
 /// [[File:Blockly-list-get-item.png]]
 Blockly.Msg.LISTS_GET_INDEX_RANDOM = 'random';
 /** @type {string} */
-/// {{Optional|Supply translation only if your language requires it.  Most do not.}}
 /// block text - Text that should go after the rightmost block/dropdown when
 /// [https://github.com/google/blockly/wiki/Lists#getting-a-single-item
 /// accessing an item from a list].  In most languages, this will be the empty string.
@@ -1361,7 +1403,6 @@ Blockly.Msg.LISTS_GET_SUBLIST_END_FROM_END = 'to # from end';
 /// [[File:Blockly-get-sublist.png]]
 Blockly.Msg.LISTS_GET_SUBLIST_END_LAST = 'to last';
 /** @type {string} */
-/// {{Optional|Supply translation only if your language requires it.  Most do not.}}
 /// block text - This appears in the rightmost position ("tail") of the
 /// sublist block, as described at
 /// [https://github.com/google/blockly/wiki/Lists#getting-a-sublist
@@ -1432,7 +1473,6 @@ Blockly.Msg.LISTS_REVERSE_MESSAGE0 = 'reverse %1';
 Blockly.Msg.LISTS_REVERSE_TOOLTIP = 'Reverse a copy of a list.';
 
 /** @type {string} */
-/// {{Optional|Supply translation only if your language requires it.  Most do not.}}
 /// grammar - Text that follows an ordinal number (a number that indicates
 /// position relative to other numbers).  In most languages, such text appears
 /// before the number, so this should be blank.  An exception is Hungarian.
@@ -1491,13 +1531,6 @@ Blockly.Msg.PROCEDURES_BEFORE_PARAMS = 'with:';
 /// function with parameters].
 Blockly.Msg.PROCEDURES_CALL_BEFORE_PARAMS = 'with:';
 /** @type {string} */
-/// warning - This appears if a block that runs a function can't run because the function
-/// definition block is disabled. See
-/// [https://blockly-demo.appspot.com/static/demos/code/index.html#q947d7 this sample of a
-/// disabled function definition and call block].
-Blockly.Msg.PROCEDURES_CALL_DISABLED_DEF_WARNING = 'Can\'t run the user-defined function "%1" because the definition block is disabled.';
-/** @type {string} */
-/// {{Optional|Supply translation only if your language requires it.  Most do not.}}
 /// block text - This appears next to the function's "body", the blocks that should be
 /// run when the function is called, as shown in
 /// [https://blockly-demo.appspot.com/static/apps/code/index.html?lang=en#voztpd this sample
@@ -1586,7 +1619,7 @@ Blockly.Msg.PROCEDURES_CREATE_DO = 'Create "%1"';
 Blockly.Msg.PROCEDURES_IFRETURN_TOOLTIP = 'If a value is true, then return a second value.';
 /** @type {string} */
 /// {{Optional}} url - Information about guard clauses.
-Blockly.Msg.PROCEDURES_IFRETURN_HELPURL = 'https://c2.com/cgi/wiki?GuardClause';
+Blockly.Msg.PROCEDURES_IFRETURN_HELPURL = 'http://c2.com/cgi/wiki?GuardClause';
 /** @type {string} */
 /// warning - This appears if the user tries to use this block outside of a function definition.
 Blockly.Msg.PROCEDURES_IFRETURN_WARNING = 'Warning: This block may be used only within a function definition.';
@@ -1606,11 +1639,3 @@ Blockly.Msg.WORKSPACE_ARIA_LABEL = 'Blockly Workspace';
 /// that block have warnings attached to them. It should inform the user that the
 /// block they collapsed contains blocks that have warnings.
 Blockly.Msg.COLLAPSED_WARNINGS_WARNING = 'Collapsed blocks contain warnings.';
-
-/** @type {string} */
-/// button label - Pressing this button closes help information.\n{{Identical|OK}}
-Blockly.Msg.DIALOG_OK = 'OK';
-
-/** @type {string} */
-/// button label - Pressing this button cancels a proposed action.\n{{Identical|Cancel}}
-Blockly.Msg.DIALOG_CANCEL = 'Cancel';

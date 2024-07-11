@@ -74,7 +74,6 @@ td.tabon {
   border-bottom-color: #ddd !important;
   background-color: #ddd;
   padding: 5px 19px;
-  white-space: nowrap;
 }
 td.taboff {
   cursor: pointer;
@@ -174,11 +173,4 @@ button {
   #tab_code {
     display: table-cell;
   }
-}
-
-/* Privacy link */
-.privacyLink {
-  font-family: Roboto, Arial, Helvetica, sans-serif;
-  font-size: small;
-  text-decoration: none;
 }

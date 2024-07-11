@@ -1,7 +1,18 @@
 /**
  * @license
  * Copyright 2016 Google LLC
- * SPDX-License-Identifier: Apache-2.0
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 /**
@@ -9,6 +20,8 @@
  * users to export block definitions and generator stubs of their saved blocks
  * easily using a visual interface. Depends on Block Exporter View and Block
  * Exporter Tools classes. Interacts with Export Settings in the index.html.
+ *
+ * @author quachtina96 (Tina Quach)
  */
 
 'use strict';
@@ -91,7 +104,7 @@ BlockExporterController.prototype.export = function() {
       BlocklyDevTools.Analytics.onExport(
           BlocklyDevTools.Analytics.BLOCK_DEFINITIONS,
           {
-            format: (definitionFormat === 'JSON' ?
+            format: (definitionFormat == 'JSON' ?
                 BlocklyDevTools.Analytics.FORMAT_JSON :
                 BlocklyDevTools.Analytics.FORMAT_JS)
           });
@@ -224,9 +237,9 @@ BlockExporterController.prototype.selectUsedBlocks = function() {
   var unstoredCustomBlockTypes = [];
 
   for (var i = 0, blockType; blockType = this.usedBlockTypes[i]; i++) {
-    if (storedBlockTypes.includes(blockType)) {
+    if (storedBlockTypes.indexOf(blockType) != -1) {
       sharedBlockTypes.push(blockType);
-    } else if (!StandardCategories.coreBlockTypes.includes(blockType)) {
+    } else if (StandardCategories.coreBlockTypes.indexOf(blockType) == -1) {
       unstoredCustomBlockTypes.push(blockType);
     }
   }
@@ -251,7 +264,7 @@ BlockExporterController.prototype.selectUsedBlocks = function() {
 
 /**
  * Set the array that holds the block types used in workspace factory.
- * @param {!Array<string>} usedBlockTypes Block types used in
+ * @param {!Array.<string>} usedBlockTypes Block types used in
  */
 BlockExporterController.prototype.setUsedBlockTypes =
     function(usedBlockTypes) {
